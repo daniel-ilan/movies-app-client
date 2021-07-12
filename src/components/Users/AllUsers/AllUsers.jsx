@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import API from '../../api';
+import API from '../../../api';
 
 const AllUsers = ({ token }) => {
   const [users, setUsers] = useState([]);

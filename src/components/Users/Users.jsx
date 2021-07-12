@@ -1,7 +1,7 @@
 import React from 'react';
 import { Switch, useRouteMatch } from 'react-router-dom';
 import { useAuth } from '../../context/UserContext';
-import AllUsers from './AllUsers';
+import AllUsers from './AllUsers/AllUsers';
 import AddUser from './AddUser';
 import { StyledLinkButton } from '../shared/Buttons';
 import * as S from './styled';

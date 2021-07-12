@@ -33,4 +33,14 @@ export const PrimaryButton = styled.button`
     border-color: #01011d;
     box-shadow: 0px 0px 3px 0px hsl(240deg 56% 58% / 70%);
   }
+  &:active {
+    background-color: #08084c;
+    border-color: #01011d;
+    box-shadow: 0px 0px 3px 0px hsl(240deg 56% 58% / 70%);
+  }
+  &:focus {
+    background-color: #08084c;
+    border-color: #01011d;
+    box-shadow: 0px 0px 3px 0px hsl(240deg 56% 58% / 70%);
+  }
 `;

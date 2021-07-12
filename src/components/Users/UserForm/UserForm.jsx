@@ -96,8 +96,8 @@ const UserForm = ({ token }) => {
 
   return (
     <>
-      <S.Header>Add new user</S.Header>
       <S.FormWrapper>
+        <S.Header>Add new user</S.Header>
         <S.FormHeader>
           <FormModal
             shouldOpen={shouldOpen}

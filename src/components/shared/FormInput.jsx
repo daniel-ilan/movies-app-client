@@ -4,8 +4,6 @@ import { Form } from 'react-bootstrap';
 
 const Error = styled.div`
   color: red;
-  margin-block: 0.25rem;
-  max-width: 50%;
 `;
 
 const FormInput = ({ changed, data, id, onFocusOut }) => {
