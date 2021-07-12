@@ -3,138 +3,158 @@ import API from '../../../api';
 import * as S from './styled';
 import FormInput from '../../shared/FormInput';
 import FormCheckbox from '../../shared/FormCheckbox';
+import { PrimaryButton } from '../../shared/Buttons';
+import {
+  STATUS,
+  initialForm,
+  UPDATE_FORM,
+  RESET_FORM,
+  onInputChange,
+  onFocusOut,
+  validateInput,
+} from '../../../utils/helpers';
+import { FormModal } from '../../shared/Modals';
 
-const initialForm = {
-  firstName: {
-    label: 'First Name',
-    value: '',
-    type: 'text',
-  },
-  lastName: {
-    label: 'Last Name',
-    value: '',
-    type: 'text',
-  },
-  username: {
-    label: 'User Name',
-    value: '',
-    type: 'text',
-  },
-  sessionTimeOut: {
-    label: 'Session time-out (In minutes)',
-    value: '',
-    type: 'number',
-  },
-  viewSubscriptions: {
-    label: 'View Subscriptions',
-    checked: false,
-    type: 'checkbox',
-  },
-  createSubscriptions: {
-    label: 'Create Subscriptions',
-    checked: false,
-    type: 'checkbox',
-  },
-  deleteSubscriptions: {
-    label: 'Delete Subscriptions',
-    checked: false,
-    type: 'checkbox',
-  },
-  updateSubscriptions: {
-    label: 'Update Subscriptions',
-    checked: false,
-    type: 'checkbox',
-  },
-  viewMovies: {
-    label: 'View Movies',
-    checked: false,
-    type: 'checkbox',
-  },
-  createMovies: {
-    label: 'Create Movies',
-    checked: false,
-    type: 'checkbox',
-  },
-  deleteMovies: {
-    label: 'Delete Movies',
-    checked: false,
-    type: 'checkbox',
-  },
-  updateMovies: {
-    label: 'Update Movies',
-    checked: false,
-    type: 'checkbox',
-  },
-};
-
-const formReducer = (state, { value, key }) => {
-  const updatedElement = { ...state[key] };
-  const isCheckbox = updatedElement.type === 'checkbox';
-  if (isCheckbox) {
-    updatedElement.checked = !updatedElement.checked;
-  } else {
-    updatedElement.value = value;
+const formReducer = (state, action) => {
+  console.log(action.type);
+  switch (action.type) {
+    case UPDATE_FORM:
+      const { name, value, hasError, error, touched, isFormValid } =
+        action.data;
+      return {
+        ...state,
+        [name]: { ...state[name], value, hasError, error, touched },
+        isFormValid,
+      };
+    case RESET_FORM:
+      return initialForm;
+    default:
+      return state;
   }
-  return { ...state, [key]: updatedElement };
 };
 
 const UserForm = ({ token }) => {
-  const [formData, setFormData] = useReducer(formReducer, initialForm);
+  const [formData, dispatch] = useReducer(formReducer, initialForm);
+  const [status, setStatus] = useState(STATUS.init);
+  const [message, setMessage] = useState('');
+  const [showError, setShowError] = useState(false);
+  const [shouldOpen, setShouldOpen] = useState(false);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
+    setStatus(STATUS.loading);
+    let isFormValid = true;
     try {
-      const formatedData = {};
-      Object.entries(formData).forEach(([key, field]) => {
-        if (field.type === 'checkbox') {
-          return (formatedData[key] = field.checked);
+      for (const name in formData) {
+        const item = formData[name];
+        const { value } = item;
+        const { hasError, error } = validateInput(name, value);
+        if (hasError) {
+          isFormValid = false;
         }
-        return (formatedData[key] = field.value);
-      });
+        if (name) {
+          dispatch({
+            type: UPDATE_FORM,
+            data: {
+              name,
+              value,
+              hasError,
+              error,
+              touched: true,
+              isFormValid,
+            },
+          });
+        }
+      }
+      if (!isFormValid) {
+        setShowError(true);
+        setTimeout(() => {
+          setShowError(false);
+        }, 5000);
+      } else {
+        const formatedData = {};
+        for (const field in formData) {
+          formatedData[field] = formData[field].value;
+        }
 
-      const result = await API.post('/add-user', formatedData, {
-        headers: { Authorization: `Barer ${token}` },
-      });
-      console.log('result', result);
+        const response = await API.post('/add-user', formatedData, {
+          headers: { Authorization: `Barer ${token}` },
+        });
+        dispatch({ type: RESET_FORM });
+        setStatus(STATUS.success);
+        setMessage(response.data.message);
+        setShouldOpen(true);
+      }
+
+      // setFormData({ key: 'reset' });
     } catch (error) {
-      console.log(error);
+      setStatus(STATUS.fail);
+      setMessage(error.response.data.message);
+      setShouldOpen(true);
     }
   };
 
   return (
-    <div>
-      <h2>Add new user</h2>
+    <>
+      <S.Header>Add new user</S.Header>
       <S.FormWrapper>
-        <S.Form>
-          {Object.keys(formData).map((key) =>
-            formData[key].type === 'checkbox' ? (
-              <FormCheckbox
-                key={key}
-                id={key}
-                checked={formData[key].checked}
-                label={formData[key].label}
-                changed={({ target: { checked } }) =>
-                  setFormData({ checked, key })
-                }
-              />
-            ) : (
-              <FormInput
-                changed={({ target: { value } }) => setFormData({ value, key })}
-                key={key}
-                id={key}
-                value={formData[key].value}
-                label={formData[key].label}
-                type={formData[key].type}
-              />
-            ),
+        <S.FormHeader>
+          <FormModal
+            shouldOpen={shouldOpen}
+            setShouldOpen={setShouldOpen}
+            message={message}
+          />
+          {showError && !formData.isFormValid && (
+            <S.FormError>Please fill all the fields correctly</S.FormError>
           )}
-          <button type='submit' onClick={handleSubmit}>
+        </S.FormHeader>
+
+        <S.Form>
+          <S.InputsWrapper>
+            <S.Credentials>
+              {Object.keys(formData).map((key) => {
+                if (formData[key].type === 'text') {
+                  return (
+                    <FormInput
+                      changed={(e) =>
+                        onInputChange(key, e.target.value, dispatch, formData)
+                      }
+                      key={key}
+                      id={key}
+                      data={formData[key]}
+                      onFocusOut={(e) =>
+                        onFocusOut(key, e.target.value, dispatch, formData)
+                      }
+                    />
+                  );
+                }
+              })}
+            </S.Credentials>
+            <S.Permissions>
+              {Object.keys(formData).map((key) => {
+                if (formData[key].type === 'checkbox') {
+                  return (
+                    <FormCheckbox
+                      key={key}
+                      id={key}
+                      value={formData[key].value}
+                      label={formData[key].label}
+                      changed={(e) =>
+                        onInputChange(key, e.target.checked, dispatch, formData)
+                      }
+                      onFocusOut={onFocusOut}
+                    />
+                  );
+                }
+              })}
+            </S.Permissions>
+          </S.InputsWrapper>
+          <PrimaryButton type='submit' onClick={handleSubmit} size='lg'>
             Add user
-          </button>
+          </PrimaryButton>
         </S.Form>
       </S.FormWrapper>
-    </div>
+    </>
   );
 };
 

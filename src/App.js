@@ -3,6 +3,7 @@ import Main from './pages/Main';
 import PrivateRoute from './components/PrivateRoute';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { UserContextProvider } from './context/UserContext';
+import 'bootstrap/dist/css/bootstrap.min.css';
 function App() {
   return (
     <div className='App'>

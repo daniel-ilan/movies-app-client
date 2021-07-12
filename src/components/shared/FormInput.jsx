@@ -1,19 +1,31 @@
 import React from 'react';
+import styled from 'styled-components';
+import { Form } from 'react-bootstrap';
 
-const FormInput = ({ changed, value, label, type, id }) => {
+const Error = styled.div`
+  color: red;
+  margin-block: 0.25rem;
+  max-width: 50%;
+`;
+
+const FormInput = ({ changed, data, id, onFocusOut }) => {
+  const { value, type, error, touched, label, hasError } = data;
+
   return (
-    <div>
-      <label>
+    <Form.Group>
+      <Form.Label>
         {label}
-        <input
+        <Form.Control
           id={id}
           onChange={changed}
           value={value || ''}
           name={id}
           type={type}
+          onBlur={onFocusOut}
         />
-      </label>
-    </div>
+      </Form.Label>
+      {touched && hasError && <Error className='error'>{error}</Error>}
+    </Form.Group>
   );
 };
 
