@@ -14,6 +14,7 @@ export const STATUS = {
 
 export const UPDATE_FORM = 'UPDATE_FORM';
 export const RESET_FORM = 'RESET_FORM';
+
 export const onInputChange = (name, value, dispatch, formData) => {
   const { hasError, error } = validateInput(name, value);
   let isFormValid = true;
@@ -53,6 +54,34 @@ export const onInputChange = (name, value, dispatch, formData) => {
         isFormValid,
       },
     });
+  } else if (name === 'viewSubscriptions' && !value) {
+    for (const permission of subscriptionsBoxes) {
+      dispatch({
+        type: UPDATE_FORM,
+        data: {
+          name: permission,
+          value: false,
+          hasError,
+          error,
+          touched: false,
+          isFormValid,
+        },
+      });
+    }
+  } else if (name === 'viewMovies' && !value) {
+    for (const permission of moviesBoxes) {
+      dispatch({
+        type: UPDATE_FORM,
+        data: {
+          name: permission,
+          value: false,
+          hasError,
+          error,
+          touched: false,
+          isFormValid,
+        },
+      });
+    }
   }
 
   dispatch({

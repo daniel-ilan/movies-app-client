@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const FormWrapper = styled.div`
-  max-width: 45%;
+  max-width: 70%;
   margin: auto;
   padding-block: 20px;
   background-color: #1f2c383d;
@@ -17,6 +17,7 @@ export const Form = styled.form`
 
 export const InputsWrapper = styled.div`
   min-width: 100%;
+  padding-inline: 20px;
   display: flex;
   justify-content: space-between;
 `;
@@ -33,10 +34,11 @@ export const FormError = styled.div`
 `;
 
 export const Credentials = styled.div`
-  flex-grow: 1;
+  flex-grow: 2;
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  flex-wrap: wrap;
+  max-width: 60%;
+  gap: 20px;
 `;
 
 export const Permissions = styled.div`
