@@ -1,22 +1,20 @@
-import React, { useReducer, useState } from 'react';
+import React, { useEffect, useReducer, useState } from 'react';
 import API from '../../../api';
 import * as S from './styled';
 import FormInput from '../../shared/FormInput';
 import FormCheckbox from '../../shared/FormCheckbox';
-import { PrimaryButton } from '../../shared/Buttons';
 import {
   STATUS,
-  initialForm,
   UPDATE_FORM,
-  RESET_FORM,
   onInputChange,
   onFocusOut,
   validateInput,
+  initialForm,
 } from '../../../utils/helpers';
 import { FormModal } from '../../shared/Modals';
+import { PrimaryButton } from '../../shared/Buttons';
 
 const formReducer = (state, action) => {
-  console.log(action.type);
   switch (action.type) {
     case UPDATE_FORM:
       const { name, value, hasError, error, touched, isFormValid } =
@@ -26,19 +24,16 @@ const formReducer = (state, action) => {
         [name]: { ...state[name], value, hasError, error, touched },
         isFormValid,
       };
-    case RESET_FORM:
-      return initialForm;
     default:
       return state;
   }
 };
 
-const UserForm = ({ token }) => {
+const UserForm = ({ token, url, buttonText, headerText, userData }) => {
   const [formData, dispatch] = useReducer(formReducer, initialForm);
   const [status, setStatus] = useState(STATUS.init);
   const [message, setMessage] = useState('');
   const [showError, setShowError] = useState(false);
-  const [shouldOpen, setShouldOpen] = useState(false);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -72,38 +67,56 @@ const UserForm = ({ token }) => {
           setShowError(false);
         }, 5000);
       } else {
+        // form is valid
         const formatedData = {};
         for (const field in formData) {
           formatedData[field] = formData[field].value;
         }
 
-        const response = await API.post('/add-user', formatedData, {
+        const response = await API.post(url, formatedData, {
           headers: { Authorization: `Barer ${token}` },
         });
-        dispatch({ type: RESET_FORM });
         setStatus(STATUS.success);
         setMessage(response.data.message);
-        setShouldOpen(true);
       }
 
       // setFormData({ key: 'reset' });
     } catch (error) {
       setStatus(STATUS.fail);
       setMessage(error.response.data.message);
-      setShouldOpen(true);
     }
   };
 
+  useEffect(() => {
+    if (userData) {
+      // get the user's permissions
+      const { permissions } = userData;
+      // set permissions as key-value pairs for the form
+      for (const permission of permissions) {
+        userData[permission] = true;
+      }
+      for (const key in userData) {
+        if (Object.hasOwnProperty.call(userData, key)) {
+          const value = userData[key];
+          dispatch({
+            type: UPDATE_FORM,
+            data: {
+              value,
+              name: key,
+              touched: true,
+              isFormValid: true,
+            },
+          });
+        }
+      }
+    }
+  }, [userData]);
   return (
-    <>
+    <div>
+      <FormModal status={status} setStatus={setStatus} message={message} />
       <S.FormWrapper>
-        <S.Header>Add new user</S.Header>
+        <S.Header>{headerText}</S.Header>
         <S.FormHeader>
-          <FormModal
-            shouldOpen={shouldOpen}
-            setShouldOpen={setShouldOpen}
-            message={message}
-          />
           {showError && !formData.isFormValid && (
             <S.FormError>Please fill all the fields correctly</S.FormError>
           )}
@@ -113,7 +126,10 @@ const UserForm = ({ token }) => {
           <S.InputsWrapper>
             <S.Credentials>
               {Object.keys(formData).map((key) => {
-                if (formData[key].type === 'text') {
+                if (
+                  formData[key].type === 'text' ||
+                  formData[key].type === 'number'
+                ) {
                   return (
                     <FormInput
                       changed={(e) =>
@@ -149,12 +165,12 @@ const UserForm = ({ token }) => {
               })}
             </S.Permissions>
           </S.InputsWrapper>
-          <PrimaryButton type='submit' onClick={handleSubmit} size='lg'>
-            Add user
+          <PrimaryButton type='submit' onClick={handleSubmit}>
+            {buttonText}
           </PrimaryButton>
         </S.Form>
       </S.FormWrapper>
-    </>
+    </div>
   );
 };
 

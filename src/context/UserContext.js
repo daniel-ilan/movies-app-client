@@ -25,14 +25,6 @@ function useProvideAuth() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [authDetails, setAuthDetails] = useState(initialState);
 
-  API.interceptors.response.use(undefined, (error) => {
-    if (error.status === 401) {
-      console.log('happend!');
-      setIsAuthenticated(false);
-    }
-    return Promise.reject(error);
-  });
-
   const login = async (username, password) => {
     const response = await API.post('/login', { username, password });
     const data = response.data;
