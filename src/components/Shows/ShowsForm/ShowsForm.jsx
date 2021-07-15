@@ -2,7 +2,6 @@ import React, { useEffect, useReducer, useState } from 'react';
 import API from '../../../api';
 import * as S from './styled';
 import FormInput from '../../shared/FormInput';
-import FormCheckbox from '../../shared/FormCheckbox';
 import {
   STATUS,
   UPDATE_FORM,
@@ -10,9 +9,13 @@ import {
   onFocusOut,
   validateInput,
   initialForm,
-} from '../../../utils/usersHelpers';
+} from '../../../utils/moviesHelpers';
 import { FormModal } from '../../shared/Modals';
 import { PrimaryButton } from '../../shared/Buttons';
+import { useAuth } from '../../../context/UserContext';
+
+const leftInputs = ['rating', 'movieName', 'imageUrl', 'premired'];
+const rightInputs = ['summary', 'genres'];
 
 const formReducer = (state, action) => {
   switch (action.type) {
@@ -29,7 +32,8 @@ const formReducer = (state, action) => {
   }
 };
 
-const UserForm = ({ token, url, buttonText, headerText, userData }) => {
+const ShowForm = ({ url, buttonText, headerText, userData }) => {
+  const { authDetails } = useAuth();
   const [formData, dispatch] = useReducer(formReducer, initialForm);
   const [status, setStatus] = useState(STATUS.init);
   const [message, setMessage] = useState('');
@@ -74,7 +78,7 @@ const UserForm = ({ token, url, buttonText, headerText, userData }) => {
         }
 
         const response = await API.post(url, formatedData, {
-          headers: { Authorization: `Barer ${token}` },
+          headers: { Authorization: `Barer ${authDetails.token}` },
         });
         setStatus(STATUS.success);
         setMessage(response.data.message);
@@ -124,13 +128,10 @@ const UserForm = ({ token, url, buttonText, headerText, userData }) => {
 
         <S.Form>
           <S.InputsWrapper>
-            <S.Credentials>
+            <S.LeftInputs>
               {Object.keys(formData).map((key) => {
-                if (
-                  formData[key].type === 'text' ||
-                  formData[key].type === 'number'
-                ) {
-                  return (
+                return (
+                  leftInputs.includes(key) && (
                     <FormInput
                       changed={(e) =>
                         onInputChange(key, e.target.value, dispatch, formData)
@@ -142,28 +143,29 @@ const UserForm = ({ token, url, buttonText, headerText, userData }) => {
                         onFocusOut(key, e.target.value, dispatch, formData)
                       }
                     />
-                  );
-                }
+                  )
+                );
               })}
-            </S.Credentials>
-            <S.Permissions>
+            </S.LeftInputs>
+            <S.RightInputs>
               {Object.keys(formData).map((key) => {
-                if (formData[key].type === 'checkbox') {
-                  return (
-                    <FormCheckbox
+                return (
+                  rightInputs.includes(key) && (
+                    <FormInput
+                      changed={(e) =>
+                        onInputChange(key, e.target.value, dispatch, formData)
+                      }
                       key={key}
                       id={key}
-                      value={formData[key].value}
-                      label={formData[key].label}
-                      changed={(e) =>
-                        onInputChange(key, e.target.checked, dispatch, formData)
+                      data={formData[key]}
+                      onFocusOut={(e) =>
+                        onFocusOut(key, e.target.value, dispatch, formData)
                       }
-                      onFocusOut={onFocusOut}
                     />
-                  );
-                }
+                  )
+                );
               })}
-            </S.Permissions>
+            </S.RightInputs>
           </S.InputsWrapper>
           <PrimaryButton type='submit' onClick={handleSubmit}>
             {buttonText}
@@ -174,4 +176,4 @@ const UserForm = ({ token, url, buttonText, headerText, userData }) => {
   );
 };
 
-export default UserForm;
+export default ShowForm;

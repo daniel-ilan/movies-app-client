@@ -4,6 +4,7 @@ import styled from 'styled-components';
 export const MoviesGrid = styled.div`
   display: flex;
   flex-wrap: wrap;
+  height: 95%;
   max-width: 80%;
   overflow: auto;
   padding-top: 50px;
@@ -60,12 +61,20 @@ export const Rating = styled.div`
   inset-block-start: -20px;
   color: whitesmoke;
   font-weight: 500;
-  background: linear-gradient(180deg, rgba(222, 86, 0, 1) 0%, rgba(252, 176, 69, 1) 100%);
+  background: linear-gradient(
+    180deg,
+    rgba(222, 86, 0, 1) 0%,
+    rgba(252, 176, 69, 1) 100%
+  );
+`;
+
+export const AllShowsContainer = styled.div`
+  display: flex;
+  height: 100%;
 `;
 
 export const Wrapper = styled.div`
-  display: flex;
-  max-height: 88%;
+  height: 88%;
 `;
 
 export const SideNav = styled.div`

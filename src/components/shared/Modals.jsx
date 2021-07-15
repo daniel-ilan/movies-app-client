@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { STATUS } from '../../utils/helpers';
+import { STATUS } from '../../utils/usersHelpers';
 import { Modal } from 'react-bootstrap';
 
 export const FormModal = ({ status, setStatus, message }) => {

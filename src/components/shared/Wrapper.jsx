@@ -1,6 +1,5 @@
 import styled from 'styled-components';
-
-export const UsersWrapper = styled.div`
+export const PageWrapper = styled.div`
   color: whitesmoke;
   height: 100%;
 `;

@@ -7,6 +7,7 @@ import Shows from '../components/Shows/Shows';
 import Subscriptions from '../components/Subscriptions/Subscriptions';
 import Welcome from '../components/Welcome';
 import styled from 'styled-components';
+import { PageWrapper } from '../components/shared/Wrapper';
 
 const MainWrapper = styled.div`
   background: linear-gradient(
@@ -24,20 +25,22 @@ const Main = () => {
   return (
     <MainWrapper>
       <MainNavbar />
-      <Switch>
-        <PrivateRoute path={path} exact>
-          <Welcome />
-        </PrivateRoute>
-        <PrivateRoute path={`${path}/shows`}>
-          <Shows />
-        </PrivateRoute>
-        <PrivateRoute path={`${path}/subscriptions`}>
-          <Subscriptions />
-        </PrivateRoute>
-        <PrivateRoute path={`${path}/users`}>
-          <Users />
-        </PrivateRoute>
-      </Switch>
+      <PageWrapper>
+        <Switch>
+          <PrivateRoute path={path} exact>
+            <Welcome />
+          </PrivateRoute>
+          <PrivateRoute path={`${path}/shows`}>
+            <Shows />
+          </PrivateRoute>
+          <PrivateRoute path={`${path}/subscriptions`}>
+            <Subscriptions />
+          </PrivateRoute>
+          <PrivateRoute path={`${path}/users`}>
+            <Users />
+          </PrivateRoute>
+        </Switch>
+      </PageWrapper>
     </MainWrapper>
   );
 };

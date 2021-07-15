@@ -55,21 +55,24 @@ const AllShows = ({ movies, setMovies }) => {
   }, [movies.status]);
 
   return movies.status === 'success' ? (
-    <S.MoviesGrid ref={rootElement}>
-      {movies.allMovies.map((movie, index) => {
-        return (
-          <S.MovieCard key={index} to={`${path}/${index}`}>
-            <S.Rating>{movie.rating}</S.Rating>
-            <S.MovieImage width='100%' height='380' src={`${movie.image}`} />
-            <S.CardActions>
-              <S.MovieTitle>{movie.name}</S.MovieTitle>
-              <S.Genres>{movie.genres.join(', ')}</S.Genres>
-            </S.CardActions>
-          </S.MovieCard>
-        );
-      })}
-      <div ref={loader}></div>
-    </S.MoviesGrid>
+    <S.AllShowsContainer>
+      <S.SideNav></S.SideNav>
+      <S.MoviesGrid ref={rootElement}>
+        {movies.allMovies.map((movie, index) => {
+          return (
+            <S.MovieCard key={index} to={`${path}/${index}`}>
+              <S.Rating>{movie.rating}</S.Rating>
+              <S.MovieImage width='100%' height='380' src={`${movie.image}`} />
+              <S.CardActions>
+                <S.MovieTitle>{movie.name}</S.MovieTitle>
+                <S.Genres>{movie.genres.join(', ')}</S.Genres>
+              </S.CardActions>
+            </S.MovieCard>
+          );
+        })}
+        <div ref={loader}></div>
+      </S.MoviesGrid>
+    </S.AllShowsContainer>
   ) : (
     <div>SPINNER!!</div>
   );

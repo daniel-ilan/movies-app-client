@@ -5,7 +5,6 @@ import AllUsers from './AllUsers/AllUsers';
 import AddUser from './AddUser';
 import EditUser from './EditUser';
 import { StyledLinkButton } from '../shared/Buttons';
-import * as S from './styled';
 
 import PrivateRoute from '../PrivateRoute';
 
@@ -14,7 +13,7 @@ const Users = () => {
   const { authDetails } = useAuth();
   const [users, setUsers] = useState(null);
   return (
-    <S.UsersWrapper>
+    <>
       <nav>
         <StyledLinkButton to={`${url}`} activeClassName='active' exact>
           All users
@@ -38,7 +37,7 @@ const Users = () => {
           <AddUser token={authDetails.token} />
         </PrivateRoute>
       </Switch>
-    </S.UsersWrapper>
+    </>
   );
 };
 

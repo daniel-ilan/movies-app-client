@@ -17,7 +17,6 @@ const StyledFormGroup = styled(Form.Group)`
 
 const FormInput = ({ changed, data, id, onFocusOut }) => {
   const { value, type, error, touched, label, hasError } = data;
-  const asType = type === 'textarea' ? 'textarea' : 'input';
 
   return (
     <StyledFormGroup>
@@ -30,7 +29,6 @@ const FormInput = ({ changed, data, id, onFocusOut }) => {
           name={id}
           type={type}
           onBlur={onFocusOut}
-          as={asType}
         />
       </StyledLabel>
       {touched && hasError && <Error className='error'>{error}</Error>}
