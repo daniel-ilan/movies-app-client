@@ -1,10 +1,21 @@
 import React from 'react';
+import styled from 'styled-components';
 import { Form } from 'react-bootstrap';
+
+const StyledLabel = styled(Form.Label)`
+  display: flex;
+  flex-direction: row-reverse;
+`;
+
+const StyledFormGroup = styled(Form.Group)`
+  display: flex;
+  justify-content: flex-start;
+`;
 
 const FormCheckbox = ({ changed, label, id, value }) => {
   return (
-    <Form.Group>
-      <Form.Label>
+    <StyledFormGroup>
+      <StyledLabel>
         {label}
         <Form.Check
           id={id}
@@ -13,8 +24,8 @@ const FormCheckbox = ({ changed, label, id, value }) => {
           name={id}
           type='checkbox'
         />
-      </Form.Label>
-    </Form.Group>
+      </StyledLabel>
+    </StyledFormGroup>
   );
 };
 

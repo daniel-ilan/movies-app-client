@@ -1,8 +1,11 @@
 import styled from 'styled-components';
 
 export const FormWrapper = styled.div`
+  max-width: 70%;
   margin: auto;
-  width: 70%;
+  padding-block: 20px;
+  background-color: #1f2c383d;
+  border-radius: 20px;
 `;
 
 export const Form = styled.form`
@@ -13,7 +16,8 @@ export const Form = styled.form`
 `;
 
 export const InputsWrapper = styled.div`
-  width: 60%;
+  min-width: 100%;
+  padding-inline: 20px;
   display: flex;
   justify-content: space-between;
 `;
@@ -25,17 +29,21 @@ export const FormError = styled.div`
   padding: 0.5rem 1.25rem;
   border: 1px solid transparent;
   border-radius: 0.25rem;
-  margin: 1rem auto;
+  margin: 0 auto;
   max-width: 50%;
 `;
 
 export const Credentials = styled.div`
-  flex-grow: 1;
+  flex-grow: 2;
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 60%;
+  gap: 20px;
 `;
 
 export const Permissions = styled.div`
   flex-grow: 1;
-  max-height: 300px;
+  max-height: 235px;
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
@@ -47,4 +55,8 @@ export const Header = styled.h2`
 
 export const FormHeader = styled.div`
   text-align: center;
+  min-height: 75px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
