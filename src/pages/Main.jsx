@@ -12,12 +12,15 @@ import { PageWrapper } from '../components/shared/Wrapper';
 const MainWrapper = styled.div`
   background: linear-gradient(
     45deg,
-    hsl(216deg 13% 6%) 80%,
+    hsl(216deg 13% 8%) 80%,
     hsl(202deg 70% 12%) 100%
   );
   height: 100vh;
   overflow: hidden;
   padding: 2%;
+  display: grid;
+  grid-template-rows: 20% 80%;
+  row-gap: 10px;
 `;
 
 const Main = () => {

@@ -8,6 +8,7 @@ const EditUser = ({ token, users }) => {
   const HEADER_TEXT = 'Edit User';
   let { userIndex } = useParams();
   const userData = users[userIndex];
+  console.log('sss');
   return (
     <div>
       <UserForm

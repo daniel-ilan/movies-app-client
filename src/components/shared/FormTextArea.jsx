@@ -12,7 +12,8 @@ const StyledLabel = styled(Form.Label)`
 `;
 
 const StyledFormGroup = styled(Form.Group)`
-  width: 250px;
+  width: 350px;
+  height: 100%;
 `;
 
 const FormInput = ({ changed, data, id, onFocusOut }) => {
@@ -29,6 +30,8 @@ const FormInput = ({ changed, data, id, onFocusOut }) => {
           name={id}
           type={type}
           onBlur={onFocusOut}
+          as='textarea'
+          rows={8}
         />
       </StyledLabel>
       {touched && hasError && <Error className='error'>{error}</Error>}

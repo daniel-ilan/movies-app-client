@@ -6,9 +6,16 @@ export const Wrapper = styled.div`
   padding: 20px;
 `;
 
+export const MovieHeader = styled.div`
+  height: 30%;
+`;
+
 export const MovieImage = styled.img`
   object-fit: contain;
-  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  flex: 1 1 30%;
+  max-width: 40%;
 `;
 
 export const MovieTitle = styled.h2`
@@ -18,17 +25,21 @@ export const MovieTitle = styled.h2`
 
 export const DescriptionContainer = styled.div`
   color: whitesmoke;
-  padding: 30px;
+  padding-inline: 30px;
+  flex: 1 1 70%;
 `;
 
 export const MovieDescription = styled.div`
   color: whitesmoke;
+  overflow: auto;
+  height: 70%;
 `;
 
 export const RatingGenersContainer = styled.div`
   display: flex;
   gap: 50px;
   margin-block: 15px;
+  align-items: center;
 `;
 
 export const Genres = styled.div`

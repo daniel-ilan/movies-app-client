@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { Switch, useRouteMatch } from 'react-router-dom';
 import PrivateRoute from '../PrivateRoute';
-import * as S from './styled';
 import AllShows from './AllShows';
 import AddShow from './AddShow';
+import EditShow from './EditShow';
+import InnerNav from '../shared/InnerNav';
 import ShowDescription from './ShowDescription/ShowDesciprtion';
-import { StyledLinkButton } from '../shared/Buttons';
 const initialState = {
   loading: false,
   allMovies: [],
@@ -14,18 +14,15 @@ const initialState = {
 
 const Shows = () => {
   const [movies, setMovies] = useState(initialState);
-  const { path, url } = useRouteMatch();
-
+  const { path } = useRouteMatch();
+  console.log(path);
   return (
-    <S.Wrapper>
-      <nav>
-        <StyledLinkButton to={`${url}`} activeClassName='active' exact>
-          All Shows
-        </StyledLinkButton>
-        <StyledLinkButton to={`${url}/add-show`} activeClassName='active'>
-          Add A Show
-        </StyledLinkButton>
-      </nav>
+    <>
+      <InnerNav
+        linkUrl='add-show'
+        linkText='Add New Show'
+        homeText='All Shows'
+      />
 
       <Switch>
         <PrivateRoute path={path} exact>
@@ -34,11 +31,14 @@ const Shows = () => {
         <PrivateRoute path={`${path}/add-show`} exact>
           <AddShow movies={movies} setMovies={setMovies} />
         </PrivateRoute>
+        <PrivateRoute path={`${path}/:showId/edit`}>
+          <EditShow allMovies={movies.allMovies} />
+        </PrivateRoute>
         <PrivateRoute path={`${path}/:showId`}>
           <ShowDescription allMovies={movies.allMovies} />
         </PrivateRoute>
       </Switch>
-    </S.Wrapper>
+    </>
   );
 };
 

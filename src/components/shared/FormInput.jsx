@@ -12,15 +12,14 @@ const StyledLabel = styled(Form.Label)`
 `;
 
 const StyledFormGroup = styled(Form.Group)`
-  width: 250px;
+  width: ${(props) => props.width || 250}px;
 `;
 
-const FormInput = ({ changed, data, id, onFocusOut }) => {
+const FormInput = ({ changed, data, id, onFocusOut, width }) => {
   const { value, type, error, touched, label, hasError } = data;
-  const asType = type === 'textarea' ? 'textarea' : 'input';
 
   return (
-    <StyledFormGroup>
+    <StyledFormGroup width={width}>
       <StyledLabel>
         {label}
         <Form.Control
@@ -30,7 +29,6 @@ const FormInput = ({ changed, data, id, onFocusOut }) => {
           name={id}
           type={type}
           onBlur={onFocusOut}
-          as={asType}
         />
       </StyledLabel>
       {touched && hasError && <Error className='error'>{error}</Error>}

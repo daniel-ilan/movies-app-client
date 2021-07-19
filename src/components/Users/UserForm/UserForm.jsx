@@ -126,11 +126,9 @@ const UserForm = ({ token, url, buttonText, headerText, userData }) => {
           <S.InputsWrapper>
             <S.Credentials>
               {Object.keys(formData).map((key) => {
-                if (
-                  formData[key].type === 'text' ||
-                  formData[key].type === 'number'
-                ) {
-                  return (
+                return (
+                  (formData[key].type === 'text' ||
+                    formData[key].type === 'number') && (
                     <FormInput
                       changed={(e) =>
                         onInputChange(key, e.target.value, dispatch, formData)
@@ -142,14 +140,14 @@ const UserForm = ({ token, url, buttonText, headerText, userData }) => {
                         onFocusOut(key, e.target.value, dispatch, formData)
                       }
                     />
-                  );
-                }
+                  )
+                );
               })}
             </S.Credentials>
             <S.Permissions>
               {Object.keys(formData).map((key) => {
-                if (formData[key].type === 'checkbox') {
-                  return (
+                return (
+                  formData[key].type === 'checkbox' && (
                     <FormCheckbox
                       key={key}
                       id={key}
@@ -160,8 +158,8 @@ const UserForm = ({ token, url, buttonText, headerText, userData }) => {
                       }
                       onFocusOut={onFocusOut}
                     />
-                  );
-                }
+                  )
+                );
               })}
             </S.Permissions>
           </S.InputsWrapper>

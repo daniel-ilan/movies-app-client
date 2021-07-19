@@ -4,7 +4,6 @@ import styled from 'styled-components';
 export const MoviesGrid = styled.div`
   display: flex;
   flex-wrap: wrap;
-  height: 95%;
   max-width: 80%;
   overflow: auto;
   padding-top: 50px;
@@ -14,15 +13,18 @@ export const MovieCard = styled(Link)`
   display: flex;
   flex-direction: column;
   cursor: pointer;
-  margin-inline-end: 5%;
+  margin-inline: 2%;
   margin-bottom: 5%;
   width: 20%;
   position: relative;
-  box-shadow: 3px 1px 15px 0px rgb(0 0 0 / 13%);
-  transition: all 0.2s;
+  box-shadow: 0px 0px 2px 2px rgb(0 0 0 / 29%);
+  transition: all 0.15s;
+  box-sizing: border-box;
 
   &:hover {
-    transform: scale(1.1);
+    transform: scale(1.05);
+    text-decoration: none;
+    box-shadow: 0px 0px 10px 0px rgb(0 0 0);
   }
 `;
 
@@ -36,13 +38,13 @@ export const MovieTitle = styled.div`
   margin-block: 5px;
 `;
 
+export const MovieHeader = styled.div``;
+
 export const MovieImage = styled.img`
-  display: block;
-  object-fit: cover;
-  box-shadow: 6px 4px 15px 1px rgb(0 0 0 / 75%);
+  object-fit: contain;
 `;
 
-export const Genres = styled.h5`
+export const Genres = styled.small`
   color: hsl(0deg 0% 56%);
 `;
 
@@ -74,7 +76,9 @@ export const AllShowsContainer = styled.div`
 `;
 
 export const Wrapper = styled.div`
-  height: 88%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 `;
 
 export const SideNav = styled.div`

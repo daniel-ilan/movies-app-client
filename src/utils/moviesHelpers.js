@@ -33,7 +33,7 @@ export const validateInput = (name, value) => {
   let hasError = false,
     error = '';
   switch (name) {
-    case 'movieName':
+    case 'name':
       if (value.trim() === '') {
         hasError = true;
         error = 'Username cannot be empty';
@@ -44,29 +44,47 @@ export const validateInput = (name, value) => {
       break;
 
     case 'genres':
-      if (value.trim() === '') {
+      if (value.length === 0) {
         hasError = true;
-        error = 'First name cannot be empty';
+        error = 'Genres can not be empty';
       } else {
         hasError = false;
         error = '';
       }
       break;
 
-    case 'imageUrl':
+    case 'image':
       if (value.trim() === '') {
         hasError = true;
-        error = 'Last name cannot be empty';
+        error = 'Image cannot be empty';
       } else {
         hasError = false;
         error = '';
       }
       break;
 
-    case 'premired':
+    case 'premiered':
       if (value.trim() === '') {
         hasError = true;
-        error = 'Last name cannot be empty';
+        error = 'Premiered date cannot be empty';
+      } else {
+        hasError = false;
+        error = '';
+      }
+      break;
+    case 'summary':
+      if (value.trim() === '') {
+        hasError = true;
+        error = 'Summary cannot be empty';
+      } else {
+        hasError = false;
+        error = '';
+      }
+      break;
+    case 'rating':
+      if (value.trim() === '') {
+        hasError = true;
+        error = 'Rating cannot be empty';
       } else {
         hasError = false;
         error = '';
@@ -96,7 +114,7 @@ export const onFocusOut = (name, value, dispatch, formData) => {
 };
 
 export const initialForm = {
-  movieName: {
+  name: {
     label: 'Name',
     value: '',
     type: 'text',
@@ -105,8 +123,8 @@ export const initialForm = {
     error: '',
   },
 
-  premired: {
-    label: 'Premired',
+  premiered: {
+    label: 'Premiered',
     value: '',
     type: 'date',
     touched: false,
@@ -121,7 +139,7 @@ export const initialForm = {
     hasError: true,
     error: '',
   },
-  imageUrl: {
+  image: {
     label: 'Image url',
     value: '',
     type: 'text',

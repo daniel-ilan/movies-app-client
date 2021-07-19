@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const FormWrapper = styled.div`
-  max-width: 70%;
+  max-width: 90%;
   margin: auto;
   padding-block: 20px;
   background-color: #1f2c383d;
@@ -38,10 +38,15 @@ export const FormHeader = styled.div`
   align-items: center;
 `;
 
+export const TextArea = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
 export const LeftInputs = styled.div``;
 export const RightInputs = styled.div``;
 export const InputsWrapper = styled.div`
   display: flex;
-  justify-content: space-evenly;
-  min-width: 80%;
+  justify-content: space-around;
+  min-width: 90%;
 `;

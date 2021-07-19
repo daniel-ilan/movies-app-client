@@ -2,6 +2,7 @@ import React, { useEffect, useReducer, useState } from 'react';
 import API from '../../../api';
 import * as S from './styled';
 import FormInput from '../../shared/FormInput';
+import FormTextArea from '../../shared/FormTextArea';
 import {
   STATUS,
   UPDATE_FORM,
@@ -14,8 +15,8 @@ import { FormModal } from '../../shared/Modals';
 import { PrimaryButton } from '../../shared/Buttons';
 import { useAuth } from '../../../context/UserContext';
 
-const leftInputs = ['rating', 'movieName', 'imageUrl', 'premired'];
-const rightInputs = ['summary', 'genres'];
+const leftInputs = ['name', 'genres', 'image'];
+const centerInputs = ['premiered', 'rating'];
 
 const formReducer = (state, action) => {
   switch (action.type) {
@@ -32,7 +33,7 @@ const formReducer = (state, action) => {
   }
 };
 
-const ShowForm = ({ url, buttonText, headerText, userData }) => {
+const ShowForm = ({ url, buttonText, headerText, showData }) => {
   const { authDetails } = useAuth();
   const [formData, dispatch] = useReducer(formReducer, initialForm);
   const [status, setStatus] = useState(STATUS.init);
@@ -40,6 +41,7 @@ const ShowForm = ({ url, buttonText, headerText, userData }) => {
   const [showError, setShowError] = useState(false);
 
   const handleSubmit = async (event) => {
+    console.log('submit');
     event.preventDefault();
     setStatus(STATUS.loading);
     let isFormValid = true;
@@ -67,9 +69,6 @@ const ShowForm = ({ url, buttonText, headerText, userData }) => {
       }
       if (!isFormValid) {
         setShowError(true);
-        setTimeout(() => {
-          setShowError(false);
-        }, 5000);
       } else {
         // form is valid
         const formatedData = {};
@@ -87,21 +86,16 @@ const ShowForm = ({ url, buttonText, headerText, userData }) => {
       // setFormData({ key: 'reset' });
     } catch (error) {
       setStatus(STATUS.fail);
+      console.log(error);
       setMessage(error.response.data.message);
     }
   };
 
   useEffect(() => {
-    if (userData) {
-      // get the user's permissions
-      const { permissions } = userData;
-      // set permissions as key-value pairs for the form
-      for (const permission of permissions) {
-        userData[permission] = true;
-      }
-      for (const key in userData) {
-        if (Object.hasOwnProperty.call(userData, key)) {
-          const value = userData[key];
+    if (showData) {
+      for (const key in showData) {
+        if (Object.hasOwnProperty.call(showData, key)) {
+          const value = showData[key];
           dispatch({
             type: UPDATE_FORM,
             data: {
@@ -114,18 +108,12 @@ const ShowForm = ({ url, buttonText, headerText, userData }) => {
         }
       }
     }
-  }, [userData]);
+  }, [showData]);
   return (
     <div>
       <FormModal status={status} setStatus={setStatus} message={message} />
       <S.FormWrapper>
         <S.Header>{headerText}</S.Header>
-        <S.FormHeader>
-          {showError && !formData.isFormValid && (
-            <S.FormError>Please fill all the fields correctly</S.FormError>
-          )}
-        </S.FormHeader>
-
         <S.Form>
           <S.InputsWrapper>
             <S.LeftInputs>
@@ -142,6 +130,7 @@ const ShowForm = ({ url, buttonText, headerText, userData }) => {
                       onFocusOut={(e) =>
                         onFocusOut(key, e.target.value, dispatch, formData)
                       }
+                      width={350}
                     />
                   )
                 );
@@ -150,7 +139,7 @@ const ShowForm = ({ url, buttonText, headerText, userData }) => {
             <S.RightInputs>
               {Object.keys(formData).map((key) => {
                 return (
-                  rightInputs.includes(key) && (
+                  centerInputs.includes(key) && (
                     <FormInput
                       changed={(e) =>
                         onInputChange(key, e.target.value, dispatch, formData)
@@ -166,8 +155,31 @@ const ShowForm = ({ url, buttonText, headerText, userData }) => {
                 );
               })}
             </S.RightInputs>
+            <S.TextArea>
+              {Object.keys(formData).map((key) => {
+                return (
+                  key === 'summary' && (
+                    <FormTextArea
+                      changed={(e) =>
+                        onInputChange(key, e.target.value, dispatch, formData)
+                      }
+                      key={key}
+                      id={key}
+                      data={formData[key]}
+                      onFocusOut={(e) =>
+                        onFocusOut(key, e.target.value, dispatch, formData)
+                      }
+                      width={350}
+                    />
+                  )
+                );
+              })}
+            </S.TextArea>
           </S.InputsWrapper>
-          <PrimaryButton type='submit' onClick={handleSubmit}>
+          <PrimaryButton
+            type='submit'
+            onClick={handleSubmit}
+            disabled={!formData.isFormValid}>
             {buttonText}
           </PrimaryButton>
         </S.Form>
