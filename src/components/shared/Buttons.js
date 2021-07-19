@@ -81,6 +81,13 @@ export const PrimaryButton = styled.button`
     border-color: #01011d;
     box-shadow: 0px 0px 3px 0px hsl(240deg 56% 58% / 70%);
   }
+  &:disabled,
+  &[disabled] {
+    border: 1px solid #999999;
+    background-color: #cccccc;
+    color: #666666;
+    pointer-events: none;
+  }
 `;
 
 export const OutLineButton = styled.button`

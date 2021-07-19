@@ -3,12 +3,9 @@ import styled from 'styled-components';
 export const UsersWrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
-  width: 95%;
   margin-inline: auto;
-  gap: 30px;
-  height: 73%;
+  gap: 10px;
   overflow: auto;
-  padding-bottom: 2%;
 `;
 
 export const UserContainer = styled.div`

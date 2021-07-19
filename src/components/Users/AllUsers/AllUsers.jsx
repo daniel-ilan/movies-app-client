@@ -38,16 +38,14 @@ const AllUsers = ({ token, users, setUsers }) => {
         headers: { Authorization: `Barer ${token}` },
       });
       setUsers(usersData.data.allUsersData);
-      console.log(usersData);
       setLoading(false);
     })();
-  }, [token]);
+  }, [token, setUsers]);
 
   if (loading) return <Spinner animation='border' />;
 
   return (
-    <S.Wrapper>
-      <h2>AllUsers page!</h2>
+    <>
       <S.UsersWrapper>
         {!loading &&
           users &&
@@ -102,7 +100,7 @@ const AllUsers = ({ token, users, setUsers }) => {
             );
           })}
       </S.UsersWrapper>
-    </S.Wrapper>
+    </>
   );
 };
 

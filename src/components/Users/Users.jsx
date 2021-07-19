@@ -4,25 +4,17 @@ import { useAuth } from '../../context/UserContext';
 import AllUsers from './AllUsers/AllUsers';
 import AddUser from './AddUser';
 import EditUser from './EditUser';
-import { StyledLinkButton } from '../shared/Buttons';
-import * as S from './styled';
+import InnerNav from '../shared/InnerNav';
 
 import PrivateRoute from '../PrivateRoute';
 
 const Users = () => {
-  const { path, url } = useRouteMatch();
+  const { path } = useRouteMatch();
   const { authDetails } = useAuth();
   const [users, setUsers] = useState(null);
   return (
-    <S.UsersWrapper>
-      <nav>
-        <StyledLinkButton to={`${url}`} activeClassName='active' exact>
-          All users
-        </StyledLinkButton>
-        <StyledLinkButton to={`${url}/add-user`} activeClassName='active'>
-          Add User
-        </StyledLinkButton>
-      </nav>
+    <>
+      <InnerNav linkUrl='add-user' linkText='Add User' homeText='All users' />
       <Switch>
         <PrivateRoute path={path} exact>
           <AllUsers
@@ -38,7 +30,7 @@ const Users = () => {
           <AddUser token={authDetails.token} />
         </PrivateRoute>
       </Switch>
-    </S.UsersWrapper>
+    </>
   );
 };
 
