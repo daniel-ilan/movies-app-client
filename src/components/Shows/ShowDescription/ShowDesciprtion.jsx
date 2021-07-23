@@ -3,15 +3,17 @@ import { useParams, useRouteMatch } from 'react-router-dom';
 import Icon from '@mdi/react';
 import { mdiAccountEditOutline, mdiDeleteOutline } from '@mdi/js';
 import * as S from './styled';
+import { useShows } from '../../../context/ShowsContext';
 import { OutLineButtonLink } from '../../shared/Buttons';
 
 const ShowDescription = ({ allMovies }) => {
+  const { allShows } = useShows();
   const { showId } = useParams();
   const { url } = useRouteMatch();
   const [selectedMovie, setSelectedMovie] = useState(null);
 
   useEffect(() => {
-    const show = allMovies.find((movie) => movie._id === showId);
+    const show = allShows.find((movie) => movie._id === showId);
     setSelectedMovie(show);
   }, [allMovies, showId]);
 

@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { Switch, useRouteMatch } from 'react-router-dom';
-import { useAuth } from '../../context/UserContext';
-import AllUsers from './AllUsers/AllUsers';
-import AddUser from './AddUser';
-import EditUser from './EditUser';
-import InnerNav from '../shared/InnerNav';
+import { useAuth } from '../context/UserContext';
+import AllUsers from '../components/Users/AllUsers/AllUsers';
+import AddUser from '../components/Users/AddUser';
+import EditUser from '../components/Users/EditUser';
+import InnerNav from '../components/shared/InnerNav';
 
-import PrivateRoute from '../PrivateRoute';
+import PrivateRoute from '../components/PrivateRoute';
 
 const Users = () => {
   const { path } = useRouteMatch();

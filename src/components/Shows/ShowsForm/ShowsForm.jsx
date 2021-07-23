@@ -14,6 +14,7 @@ import {
 import { FormModal } from '../../shared/Modals';
 import { PrimaryButton } from '../../shared/Buttons';
 import { useAuth } from '../../../context/UserContext';
+import MultiSelect from '../../shared/FormMultiSelect';
 
 const leftInputs = ['name', 'genres', 'image'];
 const centerInputs = ['premiered', 'rating'];
@@ -41,7 +42,6 @@ const ShowForm = ({ url, buttonText, headerText, showData }) => {
   const [showError, setShowError] = useState(false);
 
   const handleSubmit = async (event) => {
-    console.log('submit');
     event.preventDefault();
     setStatus(STATUS.loading);
     let isFormValid = true;
@@ -120,18 +120,29 @@ const ShowForm = ({ url, buttonText, headerText, showData }) => {
               {Object.keys(formData).map((key) => {
                 return (
                   leftInputs.includes(key) && (
-                    <FormInput
-                      changed={(e) =>
-                        onInputChange(key, e.target.value, dispatch, formData)
-                      }
-                      key={key}
-                      id={key}
-                      data={formData[key]}
-                      onFocusOut={(e) =>
-                        onFocusOut(key, e.target.value, dispatch, formData)
-                      }
-                      width={350}
-                    />
+                    <>
+                      {key === 'genres' ? (
+                        <MultiSelect options={leftInputs} />
+                      ) : (
+                        <FormInput
+                          changed={(e) =>
+                            onInputChange(
+                              key,
+                              e.target.value,
+                              dispatch,
+                              formData,
+                            )
+                          }
+                          key={key}
+                          id={key}
+                          data={formData[key]}
+                          onFocusOut={(e) =>
+                            onFocusOut(key, e.target.value, dispatch, formData)
+                          }
+                          width={350}
+                        />
+                      )}
+                    </>
                   )
                 );
               })}

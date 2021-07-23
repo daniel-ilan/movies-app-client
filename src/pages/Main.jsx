@@ -2,12 +2,13 @@ import React from 'react';
 import { Switch, useRouteMatch } from 'react-router-dom';
 import PrivateRoute from '../components/PrivateRoute';
 import MainNavbar from '../components/Navbar/MainNavbar';
-import Users from '../components/Users/Users';
-import Shows from '../components/Shows/Shows';
+import Users from './Users';
+import Shows from './Shows';
 import Subscriptions from '../components/Subscriptions/Subscriptions';
 import Welcome from '../components/Welcome';
 import styled from 'styled-components';
 import { PageWrapper } from '../components/shared/Wrapper';
+import { ShowsContextProvider } from '../context/ShowsContext';
 
 const MainWrapper = styled.div`
   background: linear-gradient(
@@ -29,20 +30,22 @@ const Main = () => {
     <MainWrapper>
       <MainNavbar />
       <PageWrapper>
-        <Switch>
-          <PrivateRoute path={path} exact>
-            <Welcome />
-          </PrivateRoute>
-          <PrivateRoute path={`${path}/shows`}>
-            <Shows />
-          </PrivateRoute>
-          <PrivateRoute path={`${path}/subscriptions`}>
-            <Subscriptions />
-          </PrivateRoute>
-          <PrivateRoute path={`${path}/users`}>
-            <Users />
-          </PrivateRoute>
-        </Switch>
+        <ShowsContextProvider>
+          <Switch>
+            <PrivateRoute path={path} exact>
+              <Welcome />
+            </PrivateRoute>
+            <PrivateRoute path={`${path}/shows`}>
+              <Shows />
+            </PrivateRoute>
+            <PrivateRoute path={`${path}/subscriptions`}>
+              <Subscriptions />
+            </PrivateRoute>
+            <PrivateRoute path={`${path}/users`}>
+              <Users />
+            </PrivateRoute>
+          </Switch>
+        </ShowsContextProvider>
       </PageWrapper>
     </MainWrapper>
   );
