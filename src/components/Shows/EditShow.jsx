@@ -1,17 +1,19 @@
 import React from 'react';
 import ShowForm from './ShowsForm/ShowsForm';
 import { useParams } from 'react-router-dom';
+import { useShows } from '../../context/ShowsContext';
 
-const EditShow = ({ allMovies }) => {
-  const URL = '/edit-movie';
+const EditShow = () => {
   const BUTTON_TEXT = 'Update Show';
   const HEADER_TEXT = 'Edit Show';
   let { showId } = useParams();
-  const showData = allMovies.find((show) => show._id === showId);
+  const { allShows, editShow } = useShows();
+  const showData = allShows.find((show) => show._id === showId);
+
   return (
     <div>
       <ShowForm
-        url={URL}
+        action={editShow}
         buttonText={BUTTON_TEXT}
         headerText={HEADER_TEXT}
         showData={showData}

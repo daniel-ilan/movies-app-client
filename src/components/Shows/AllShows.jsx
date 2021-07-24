@@ -1,67 +1,67 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { useAuth } from '../../context/UserContext';
-import { isEqual } from 'lodash';
-import API from '../../api';
+import { useShows } from '../../context/ShowsContext';
 import * as S from './styled';
 import { useRouteMatch } from 'react-router-dom';
 
-const AllShows = ({ movies, setMovies }) => {
-  const { authDetails } = useAuth();
+const SHOWS_PER_PAGE = 20;
+
+const AllShows = () => {
   const { path } = useRouteMatch();
   const loader = useRef(null);
   const rootElement = useRef(null);
-  const [page, setPage] = useState(1);
-  const [nextPage, setNextPage] = useState(null);
+  const [page, setPage] = useState(0);
+  const { allShows } = useShows();
+  const [showsToRender, setShowsToRender] = useState([]);
+  const [initialLoad, setInitialLoad] = useState(true);
 
-  const handleSetMovies = useCallback(() => {
-    setMovies({ ...movies, loading: true });
-    const token = authDetails.token;
-    API.post(
-      '/pagination-movies',
-      { nextPage: nextPage },
-      {
-        headers: { Authorization: `Barer ${token}` },
-      },
-    ).then((data) => {
-      setMovies({
-        allMovies: movies.allMovies.concat(data.data.movies),
-        loading: false,
-        status: 'success',
-      });
-      setNextPage(data.data.next);
-    });
-  }, [setMovies, page]);
+  const hasMoreData = showsToRender.length < allShows.length;
 
-  const handleObserver = (entities) => {
-    const target = entities[0];
-    if (target.isIntersecting) {
+  const loadMoreShows = useCallback(() => {
+    if (hasMoreData) {
+      const newShows = Array.from(allShows).slice(
+        page * SHOWS_PER_PAGE,
+        (page + 1) * SHOWS_PER_PAGE,
+      );
+      setShowsToRender((shows) => [...shows, ...newShows]);
       setPage((page) => page + 1);
     }
-  };
+  }, [allShows, page, hasMoreData]);
 
-  useEffect(() => {
-    if (movies.allMovies.length < 240) {
-      handleSetMovies();
-    }
-  }, [page]);
-
+  const handleObserver = useCallback(
+    (entities) => {
+      const target = entities[0];
+      if (target.isIntersecting) {
+        loadMoreShows();
+      }
+    },
+    [loadMoreShows],
+  );
   useEffect(() => {
     if (loader.current && rootElement.current) {
-      var options = {
+      const toObserve = loader.current;
+      const options = {
         root: rootElement.current,
         rootMargin: '20px',
         threshold: 1.0,
       };
       const observer = new IntersectionObserver(handleObserver, options);
-      observer.observe(loader.current);
+      observer.observe(toObserve);
+      return () => observer.unobserve(toObserve);
     }
-  }, [movies.status]);
+  }, [loader, handleObserver, initialLoad]);
 
-  return movies.status === 'success' ? (
+  useEffect(() => {
+    if (initialLoad) {
+      loadMoreShows();
+      setInitialLoad(false);
+    }
+  }, [loadMoreShows, initialLoad]);
+
+  return showsToRender.length > 0 ? (
     <S.AllShowsContainer>
       <S.SideNav></S.SideNav>
       <S.MoviesGrid ref={rootElement}>
-        {movies.allMovies.map((movie, index) => {
+        {showsToRender.map((movie, index) => {
           return (
             <S.MovieCard key={movie._id} to={`${path}/${movie._id}`}>
               <S.MovieHeader>

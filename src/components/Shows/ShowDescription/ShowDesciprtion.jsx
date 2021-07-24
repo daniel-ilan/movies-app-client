@@ -1,19 +1,32 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useRouteMatch } from 'react-router-dom';
+import { useParams, useRouteMatch, useHistory } from 'react-router-dom';
 import Icon from '@mdi/react';
 import { mdiAccountEditOutline, mdiDeleteOutline } from '@mdi/js';
 import * as S from './styled';
-import { OutLineButtonLink } from '../../shared/Buttons';
+import { useShows } from '../../../context/ShowsContext';
+import { OutLineButtonLink, OutLineButton } from '../../shared/Buttons';
 
-const ShowDescription = ({ allMovies }) => {
+const ShowDescription = () => {
+  const { allShows, deleteShow } = useShows();
   const { showId } = useParams();
   const { url } = useRouteMatch();
   const [selectedMovie, setSelectedMovie] = useState(null);
+  const history = useHistory();
+
+  const handleDelete = async (showId) => {
+    try {
+      const response = await deleteShow(showId);
+      history.push('/main/shows');
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
-    const show = allMovies.find((movie) => movie._id === showId);
+    const show = allShows.find((movie) => movie._id === showId);
     setSelectedMovie(show);
-  }, [allMovies, showId]);
+  }, [allShows, showId]);
 
   return selectedMovie ? (
     <S.Wrapper>
@@ -33,10 +46,12 @@ const ShowDescription = ({ allMovies }) => {
               />
               Edit
             </OutLineButtonLink>
-            <OutLineButtonLink to={`${url}/delete`} borderColor='#522a2a'>
+            <OutLineButton
+              onClick={() => handleDelete(showId)}
+              borderColor='#522a2a'>
               <Icon path={mdiDeleteOutline} title='User Profile' size={1} />
               Delete
-            </OutLineButtonLink>
+            </OutLineButton>
           </S.RatingGenersContainer>
         </S.MovieHeader>
         <S.MovieDescription

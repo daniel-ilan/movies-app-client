@@ -9,9 +9,9 @@ export const UPDATE_FORM = 'UPDATE_FORM';
 export const RESET_FORM = 'RESET_FORM';
 
 export const onInputChange = (name, value, dispatch, formData) => {
+  console.log('onInputChange', value);
   const { hasError, error } = validateInput(name, value);
   let isFormValid = true;
-
   for (const key in formData) {
     const item = formData[key];
     // Check if the current field has error
@@ -32,6 +32,7 @@ export const onInputChange = (name, value, dispatch, formData) => {
 export const validateInput = (name, value) => {
   let hasError = false,
     error = '';
+  console.log('value', value);
   switch (name) {
     case 'name':
       if (value.trim() === '') {
@@ -47,6 +48,9 @@ export const validateInput = (name, value) => {
       if (value.length === 0) {
         hasError = true;
         error = 'Genres can not be empty';
+      } else if (value.length > 6) {
+        hasError = true;
+        error = 'Please select up to 6 Genres';
       } else {
         hasError = false;
         error = '';
@@ -82,7 +86,7 @@ export const validateInput = (name, value) => {
       }
       break;
     case 'rating':
-      if (value.trim() === '') {
+      if (value.toString().trim() === '') {
         hasError = true;
         error = 'Rating cannot be empty';
       } else {
@@ -97,6 +101,7 @@ export const validateInput = (name, value) => {
 };
 
 export const onFocusOut = (name, value, dispatch, formData) => {
+  console.log('here!', value);
   const { hasError, error } = validateInput(name, value);
   let isFormValid = true;
   for (const key in formData) {

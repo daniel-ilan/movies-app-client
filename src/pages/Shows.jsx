@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { Switch, useRouteMatch } from 'react-router-dom';
-import PrivateRoute from '../PrivateRoute';
-import AllShows from './AllShows';
-import AddShow from './AddShow';
-import EditShow from './EditShow';
-import InnerNav from '../shared/InnerNav';
-import ShowDescription from './ShowDescription/ShowDesciprtion';
+import PrivateRoute from '../components/PrivateRoute';
+import AllShows from '../components/Shows/AllShows';
+import AddShow from '../components/Shows/AddShow';
+import EditShow from '../components/Shows/EditShow';
+import InnerNav from '../components/shared/InnerNav';
+import ShowDescription from '../components/Shows/ShowDescription/ShowDesciprtion';
 const initialState = {
   loading: false,
   allMovies: [],
@@ -15,7 +15,6 @@ const initialState = {
 const Shows = () => {
   const [movies, setMovies] = useState(initialState);
   const { path } = useRouteMatch();
-  console.log(path);
   return (
     <>
       <InnerNav
