@@ -17,11 +17,8 @@ export const ShowsContextProvider = ({ children }) => {
 
 function useMoviesData() {
   const [allShows, setAllShows] = useState([]);
+  const [allGenres, setAllGenres] = useState([]);
   const { authDetails } = useAuth();
-  const getAllGenres = () => {
-    const genres = [...new Set(allShows.map((show) => show.genres).flat(1))];
-    return genres;
-  };
 
   const getAllShows = useCallback(async () => {
     try {
@@ -31,10 +28,51 @@ function useMoviesData() {
       });
 
       setAllShows(response.data);
+      const genres = [
+        ...new Set(response.data.map((show) => show.genres).flat(1)),
+      ];
+      setAllGenres(genres);
     } catch (error) {
       console.log(error);
     }
   }, [setAllShows, authDetails.token]);
+
+  const addNewShow = async (data) => {
+    try {
+      const response = await API.post('/add-movie', data, {
+        headers: { Authorization: `Barer ${authDetails.token}` },
+      });
+      getAllShows();
+      return response;
+    } catch (error) {
+      console.log(error);
+      throw new Error(error.response.data.message);
+    }
+  };
+
+  const editShow = async (data) => {
+    try {
+      const response = await API.post('/edit-movie', data, {
+        headers: { Authorization: `Barer ${authDetails.token}` },
+      });
+      getAllShows();
+      return response;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const deleteShow = async (showId) => {
+    try {
+      const response = await API.delete(`delete-movie/${showId}`, {
+        headers: { Authorization: `Barer ${authDetails.token}` },
+      });
+      getAllShows();
+      return response;
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
     getAllShows();
@@ -43,7 +81,9 @@ function useMoviesData() {
   return {
     allShows,
     setAllShows,
-    getAllGenres,
-    getAllShows,
+    allGenres,
+    addNewShow,
+    editShow,
+    deleteShow,
   };
 }

@@ -17,7 +17,6 @@ const AllShows = () => {
   const hasMoreData = showsToRender.length < allShows.length;
 
   const loadMoreShows = useCallback(() => {
-    console.log('showsToRender', showsToRender);
     if (hasMoreData) {
       const newShows = Array.from(allShows).slice(
         page * SHOWS_PER_PAGE,
@@ -31,7 +30,6 @@ const AllShows = () => {
   const handleObserver = useCallback(
     (entities) => {
       const target = entities[0];
-      console.log('sss');
       if (target.isIntersecting) {
         loadMoreShows();
       }

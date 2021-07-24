@@ -1,5 +1,4 @@
 import React, { useEffect, useReducer, useState } from 'react';
-import API from '../../../api';
 import * as S from './styled';
 import FormInput from '../../shared/FormInput';
 import FormTextArea from '../../shared/FormTextArea';
@@ -13,8 +12,8 @@ import {
 } from '../../../utils/moviesHelpers';
 import { FormModal } from '../../shared/Modals';
 import { PrimaryButton } from '../../shared/Buttons';
-import { useAuth } from '../../../context/UserContext';
 import MultiSelect from '../../shared/FormMultiSelect';
+import { useShows } from '../../../context/ShowsContext';
 
 const leftInputs = ['name', 'genres', 'image'];
 const centerInputs = ['premiered', 'rating'];
@@ -34,13 +33,13 @@ const formReducer = (state, action) => {
   }
 };
 
-const ShowForm = ({ url, buttonText, headerText, showData }) => {
-  const { authDetails } = useAuth();
+const ShowForm = ({ action, buttonText, headerText, showData }) => {
   const [formData, dispatch] = useReducer(formReducer, initialForm);
   const [status, setStatus] = useState(STATUS.init);
   const [message, setMessage] = useState('');
   const [showError, setShowError] = useState(false);
-
+  const [selectedGenres, setSelectedGenres] = useState([]);
+  const { allGenres } = useShows();
   const handleSubmit = async (event) => {
     event.preventDefault();
     setStatus(STATUS.loading);
@@ -72,13 +71,17 @@ const ShowForm = ({ url, buttonText, headerText, showData }) => {
       } else {
         // form is valid
         const formatedData = {};
-        for (const field in formData) {
-          formatedData[field] = formData[field].value;
+        for (const name in formData) {
+          if (name === 'genres' && formData[name].label) {
+            formatedData[name] = formData[name].value.map(
+              (genre) => genre.value,
+            );
+          } else {
+            formatedData[name] = formData[name].value;
+          }
         }
-
-        const response = await API.post(url, formatedData, {
-          headers: { Authorization: `Barer ${authDetails.token}` },
-        });
+        console.log('formatedData', formatedData);
+        const response = await action(formatedData);
         setStatus(STATUS.success);
         setMessage(response.data.message);
       }
@@ -86,8 +89,8 @@ const ShowForm = ({ url, buttonText, headerText, showData }) => {
       // setFormData({ key: 'reset' });
     } catch (error) {
       setStatus(STATUS.fail);
-      console.log(error);
-      setMessage(error.response.data.message);
+      console.log(error.message);
+      setMessage(error.message);
     }
   };
 
@@ -105,10 +108,17 @@ const ShowForm = ({ url, buttonText, headerText, showData }) => {
               isFormValid: true,
             },
           });
+          if (key === 'genres') {
+            const formatGenres = showData[key].map((genre) => {
+              return { value: genre, label: genre };
+            });
+            setSelectedGenres(formatGenres);
+          }
         }
       }
     }
   }, [showData]);
+
   return (
     <div>
       <FormModal status={status} setStatus={setStatus} message={message} />
@@ -120,9 +130,24 @@ const ShowForm = ({ url, buttonText, headerText, showData }) => {
               {Object.keys(formData).map((key) => {
                 return (
                   leftInputs.includes(key) && (
-                    <>
+                    <React.Fragment key={key}>
                       {key === 'genres' ? (
-                        <MultiSelect options={leftInputs} />
+                        <MultiSelect
+                          options={allGenres}
+                          data={formData[key]}
+                          initialGenres={selectedGenres}
+                          width={350}
+                          id={key}
+                          changed={(value) =>
+                            onInputChange(key, value, dispatch, formData)
+                          }
+                          onFocusOut={(value) =>
+                            onFocusOut(key, value, dispatch, formData)
+                          }
+                          isMulti
+                          maxOptions={5}
+                          key={key}
+                        />
                       ) : (
                         <FormInput
                           changed={(e) =>
@@ -142,7 +167,7 @@ const ShowForm = ({ url, buttonText, headerText, showData }) => {
                           width={350}
                         />
                       )}
-                    </>
+                    </React.Fragment>
                   )
                 );
               })}
