@@ -37,8 +37,7 @@ const ShowDescription = () => {
           <S.RatingGenersContainer>
             <S.Genres>{selectedMovie.genres.join(', ')}</S.Genres>
             <S.Rating>{selectedMovie.rating}</S.Rating>
-            <OutLineButtonLink to={`${url}/edit`} borderColor='darkcyan'>
-              {' '}
+            <OutLineButtonLink to={`${url}/edit`} BColor='darkcyan'>
               <Icon
                 path={mdiAccountEditOutline}
                 title='User Profile'
@@ -48,7 +47,7 @@ const ShowDescription = () => {
             </OutLineButtonLink>
             <OutLineButton
               onClick={() => handleDelete(showId)}
-              borderColor='#522a2a'>
+              BColor='#522a2a'>
               <Icon path={mdiDeleteOutline} title='User Profile' size={1} />
               Delete
             </OutLineButton>

@@ -4,11 +4,13 @@ import PrivateRoute from '../components/PrivateRoute';
 import MainNavbar from '../components/Navbar/MainNavbar';
 import Users from './Users';
 import Shows from './Shows';
-import Subscriptions from '../components/Subscriptions/Subscriptions';
+import Members from './Subscriptions';
 import Welcome from '../components/Welcome';
 import styled from 'styled-components';
 import { PageWrapper } from '../components/shared/Wrapper';
 import { ShowsContextProvider } from '../context/ShowsContext';
+import { SubscriptionsContextProvider } from '../context/SubscriptionsContext';
+import { MembersContextProvider } from '../context/MembersContext';
 
 const MainWrapper = styled.div`
   background: linear-gradient(
@@ -31,20 +33,24 @@ const Main = () => {
       <MainNavbar />
       <PageWrapper>
         <ShowsContextProvider>
-          <Switch>
-            <PrivateRoute path={path} exact>
-              <Welcome />
-            </PrivateRoute>
-            <PrivateRoute path={`${path}/shows`}>
-              <Shows />
-            </PrivateRoute>
-            <PrivateRoute path={`${path}/subscriptions`}>
-              <Subscriptions />
-            </PrivateRoute>
-            <PrivateRoute path={`${path}/users`}>
-              <Users />
-            </PrivateRoute>
-          </Switch>
+          <SubscriptionsContextProvider>
+            <MembersContextProvider>
+              <Switch>
+                <PrivateRoute path={path} exact>
+                  <Welcome />
+                </PrivateRoute>
+                <PrivateRoute path={`${path}/shows`}>
+                  <Shows />
+                </PrivateRoute>
+                <PrivateRoute path={`${path}/members`}>
+                  <Members />
+                </PrivateRoute>
+                <PrivateRoute path={`${path}/users`}>
+                  <Users />
+                </PrivateRoute>
+              </Switch>
+            </MembersContextProvider>
+          </SubscriptionsContextProvider>
         </ShowsContextProvider>
       </PageWrapper>
     </MainWrapper>

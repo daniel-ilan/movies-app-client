@@ -5,7 +5,7 @@ const outlineCss = css`
   text-decoration: none !important;
   padding: 8px;
   background-color: transparent;
-  border: 1px solid ${(props) => props.borderColor || '#27273d6b'};
+  border: 1px solid ${(props) => props.BColor || '#27273d6b'};
   color: gray;
   display: flex;
   justify-content: center;
@@ -18,8 +18,7 @@ const outlineCss = css`
   height: 40px;
   color: ${(props) => props.color || '#b3b3b3'};
   &:hover {
-    background-color: ${(props) =>
-      props.borderColor ? props.borderColor : '#27273d6b'};
+    background-color: ${(props) => (props.BColor ? props.BColor : '#27273d6b')};
     color: #b3b3b3;
   }
   &:active {
