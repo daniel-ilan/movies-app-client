@@ -16,10 +16,8 @@ const MainNavbar = () => {
             </StyledLinkButton>
           </S.LinkItem>
           <S.LinkItem>
-            <StyledLinkButton
-              to={`${url}/subscriptions`}
-              activeClassName='active'>
-              Subscriptions
+            <StyledLinkButton to={`${url}/members`} activeClassName='active'>
+              Members
             </StyledLinkButton>
           </S.LinkItem>
           <S.LinkItem>
