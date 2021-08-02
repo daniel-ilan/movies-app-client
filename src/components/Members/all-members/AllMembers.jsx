@@ -1,15 +1,34 @@
 import React from 'react';
 import { useMembers } from '../../../context/MembersContext';
-
+import { useSubscriptions } from '../../../context/SubscriptionsContext';
+import MemberDisplay from '../member-display/MemberDisplay';
+import { FlexWrap } from '../../shared/Wrapper';
 const AllMembers = () => {
   const { allMembers } = useMembers();
-  console.log(allMembers);
+  const { allSubscriptions } = useSubscriptions();
+
+  const getMemberSubscriptions = (memberId) => {
+    const memberSubscriptions = allSubscriptions.find(
+      (subscription) => subscription.memberId === memberId,
+    );
+    if (!memberSubscriptions) {
+      return;
+    }
+    return memberSubscriptions;
+  };
+
   return (
-    <>
+    <FlexWrap>
       {allMembers.map((member) => {
-        return;
+        return (
+          <MemberDisplay
+            member={member}
+            key={member._id}
+            subscriptions={getMemberSubscriptions(member._id)}
+          />
+        );
       })}
-    </>
+    </FlexWrap>
   );
 };
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import { useRouteMatch } from 'react-router-dom';
-import { StyledLinkButton } from '../shared/Buttons';
+import { StyledLink } from '../shared/Buttons';
 import * as S from './styled';
 
 const MainNavbar = () => {
@@ -11,24 +11,24 @@ const MainNavbar = () => {
       <S.Nav>
         <S.Links>
           <S.LinkItem>
-            <StyledLinkButton to={`${url}/shows`} activeClassName='active'>
+            <StyledLink to={`${url}/shows`} activeClassName='active'>
               Shows
-            </StyledLinkButton>
+            </StyledLink>
           </S.LinkItem>
           <S.LinkItem>
-            <StyledLinkButton to={`${url}/members`} activeClassName='active'>
+            <StyledLink to={`${url}/members`} activeClassName='active'>
               Members
-            </StyledLinkButton>
+            </StyledLink>
           </S.LinkItem>
           <S.LinkItem>
-            <StyledLinkButton to={`${url}/users`} activeClassName='active'>
+            <StyledLink to={`${url}/users`} activeClassName='active'>
               User Managment
-            </StyledLinkButton>
+            </StyledLink>
           </S.LinkItem>
           <S.LinkItem>
-            <StyledLinkButton to={`${url}/logout`} activeClassName='active'>
+            <StyledLink to={`${url}/logout`} activeClassName='active'>
               Logout
-            </StyledLinkButton>
+            </StyledLink>
           </S.LinkItem>
         </S.Links>
       </S.Nav>

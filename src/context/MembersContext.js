@@ -36,7 +36,8 @@ function useMembersData() {
 
   const addNewMember = async (data) => {
     try {
-      const response = await API.post('/add-member', data, {
+      console.log('data', data);
+      const response = await API.post('/add-new-member', data, {
         headers: { Authorization: `Barer ${authDetails.token}` },
       });
       getAllMembers();
@@ -56,6 +57,7 @@ function useMembersData() {
       return response;
     } catch (error) {
       console.log(error);
+      return error.response;
     }
   };
 

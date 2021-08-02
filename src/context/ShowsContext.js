@@ -74,6 +74,11 @@ function useMoviesData() {
     }
   };
 
+  const getShowById = (showId) => {
+    const shows = allShows.find((show) => show._id === showId);
+    return shows;
+  };
+
   useEffect(() => {
     getAllShows();
   }, [getAllShows]);
@@ -85,5 +90,6 @@ function useMoviesData() {
     addNewShow,
     editShow,
     deleteShow,
+    getShowById,
   };
 }

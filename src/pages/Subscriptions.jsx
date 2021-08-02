@@ -3,6 +3,7 @@ import InnerNav from '../components/shared/InnerNav';
 import { Switch, useRouteMatch } from 'react-router-dom';
 import PrivateRoute from '../components/PrivateRoute';
 import AllMembers from '../components/Members/all-members/AllMembers';
+import AddMember from '../components/Members/AddMember';
 
 const Members = () => {
   const { path } = useRouteMatch();
@@ -16,6 +17,9 @@ const Members = () => {
       <Switch>
         <PrivateRoute path={path} exact>
           <AllMembers />
+        </PrivateRoute>
+        <PrivateRoute path={`${path}/add-member`}>
+          <AddMember />
         </PrivateRoute>
       </Switch>
     </>

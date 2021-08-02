@@ -1,6 +1,6 @@
 import React from 'react';
 import { useRouteMatch } from 'react-router-dom';
-import { StyledLinkButton } from '../shared/Buttons';
+import { StyledLink } from '../shared/Buttons';
 import styled from 'styled-components';
 
 const NavBar = styled.nav`
@@ -11,12 +11,12 @@ const InnerNav = ({ linkUrl, linkText, homeText }) => {
   const { url } = useRouteMatch();
   return (
     <NavBar>
-      <StyledLinkButton to={`${url}`} activeClassName='active' exact>
+      <StyledLink to={`${url}`} activeClassName='active' exact>
         {homeText}
-      </StyledLinkButton>
-      <StyledLinkButton to={`${url}/${linkUrl}`} activeClassName='active'>
+      </StyledLink>
+      <StyledLink to={`${url}/${linkUrl}`} activeClassName='active'>
         {linkText}
-      </StyledLinkButton>
+      </StyledLink>
     </NavBar>
   );
 };

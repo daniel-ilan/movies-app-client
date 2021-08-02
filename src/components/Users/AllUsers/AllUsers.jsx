@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useRouteMatch } from 'react-router-dom';
 import API from '../../../api';
-import * as S from './styled';
 import { Spinner } from 'react-bootstrap';
 import UserDisplay from '../user-display/UserDisplay';
-
+import { FlexWrap } from '../../shared/Wrapper';
 const AllUsers = ({ token, users, setUsers }) => {
   const [loading, setLoading] = useState(false);
   const { url } = useRouteMatch();
@@ -43,7 +42,7 @@ const AllUsers = ({ token, users, setUsers }) => {
 
   return (
     <>
-      <S.UsersWrapper>
+      <FlexWrap>
         {!loading &&
           users &&
           users.map((user, index) => {
@@ -57,7 +56,7 @@ const AllUsers = ({ token, users, setUsers }) => {
               />
             );
           })}
-      </S.UsersWrapper>
+      </FlexWrap>
     </>
   );
 };
