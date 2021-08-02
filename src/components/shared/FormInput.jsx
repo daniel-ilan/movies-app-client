@@ -4,6 +4,8 @@ import { Form } from 'react-bootstrap';
 
 const Error = styled.div`
   color: red;
+  min-height: 1.25em;
+  line-height: 1.25;
 `;
 
 const StyledLabel = styled(Form.Label)`
@@ -12,7 +14,7 @@ const StyledLabel = styled(Form.Label)`
 `;
 
 const StyledFormGroup = styled(Form.Group)`
-  width: ${(props) => props.width || 250}px;
+  width: ${(props) => props.width || 250};
 `;
 
 const FormInput = ({ changed, data, id, onFocusOut, width }) => {
@@ -31,7 +33,7 @@ const FormInput = ({ changed, data, id, onFocusOut, width }) => {
           onBlur={onFocusOut}
         />
       </StyledLabel>
-      {touched && hasError && <Error className='error'>{error}</Error>}
+      <Error>{touched && hasError && error}</Error>
     </StyledFormGroup>
   );
 };

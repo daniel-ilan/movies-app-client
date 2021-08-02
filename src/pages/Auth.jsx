@@ -2,7 +2,13 @@ import React, { useEffect } from 'react';
 import Login from '../components/Login';
 import SignUp from '../components/SignUp';
 import { useAuth } from '../context/UserContext';
-import { Redirect, Switch, Route, useRouteMatch, useHistory } from 'react-router-dom';
+import {
+  Redirect,
+  Switch,
+  Route,
+  useRouteMatch,
+  useHistory,
+} from 'react-router-dom';
 
 const Auth = () => {
   const { isAuthenticated } = useAuth();

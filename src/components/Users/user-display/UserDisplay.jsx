@@ -1,16 +1,23 @@
 import React from 'react';
-import * as S from './styled';
 import { OutLineButton, OutLineButtonLink } from '../../shared/Buttons';
 import Avatar from '../../shared/Avatar';
 import Icon from '@mdi/react';
 import { mdiAccountEditOutline, mdiDeleteOutline } from '@mdi/js';
+import {
+  CardContainer,
+  CardActions,
+  CardInfoSubHeader,
+  CardHeader,
+  CardInfoText,
+  CardInfoBlock,
+} from '../../shared/Card';
 
 const UserDisplay = ({ index, url, handleDeletUser, user }) => {
   return (
-    <S.UserContainer>
-      <S.UserHeader>
+    <CardContainer>
+      <CardHeader>
         <Avatar firstName={user.firstName} lastName={user.lastName} />
-        <S.UserActions>
+        <CardActions>
           <OutLineButtonLink BColor='darkcyan' to={`${url}/edit-user/${index}`}>
             Edit{'  '}
             <Icon path={mdiAccountEditOutline} title='User Profile' size={1} />
@@ -21,29 +28,31 @@ const UserDisplay = ({ index, url, handleDeletUser, user }) => {
             Delete{'  '}
             <Icon path={mdiDeleteOutline} title='User Profile' size={1} />
           </OutLineButton>
-        </S.UserActions>
-      </S.UserHeader>
-      <S.UserFullName>
-        Name:
-        <S.NormalText>{`${user.firstName} ${user.lastName}`}</S.NormalText>
-      </S.UserFullName>
-      <S.Username>
-        User Name: <S.NormalText>{user.username}</S.NormalText>
-      </S.Username>
-      <S.UserSession>
-        Session Time Out (Minutes):{' '}
+        </CardActions>
+      </CardHeader>
+      <CardInfoBlock>
+        <CardInfoSubHeader>Name: </CardInfoSubHeader>
+        <CardInfoText>{`${user.firstName} ${user.lastName}`}</CardInfoText>
+      </CardInfoBlock>
+      <CardInfoBlock>
+        <CardInfoSubHeader>User Name: </CardInfoSubHeader>
+        <CardInfoText>{user.username}</CardInfoText>
+      </CardInfoBlock>
+      <CardInfoBlock>
+        <CardInfoSubHeader>Session Time Out (Minutes): </CardInfoSubHeader>
         {user.sessionTimeOut || (
-          <S.NormalText
+          <CardInfoText
             dangerouslySetInnerHTML={{
               __html: '&#x221e',
             }}
           />
         )}
-      </S.UserSession>
-      <S.UserPermissions>
-        Permisssions: <S.NormalText>{user.permissions.join(', ')}</S.NormalText>
-      </S.UserPermissions>
-    </S.UserContainer>
+      </CardInfoBlock>
+      <CardInfoBlock>
+        <CardInfoSubHeader>Permisssions: </CardInfoSubHeader>
+        <CardInfoText>{user.permissions.join(', ')}</CardInfoText>
+      </CardInfoBlock>
+    </CardContainer>
   );
 };
 

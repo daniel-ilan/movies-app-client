@@ -31,7 +31,7 @@ const outlineCss = css`
   }
 `;
 
-export const StyledLinkButton = styled(NavLink)`
+const linkButtonCss = css`
   text-decoration: none !important;
   padding: 10px 15px;
   color: #e5e5e5;
@@ -53,6 +53,20 @@ export const StyledLinkButton = styled(NavLink)`
     box-shadow: 0px 0px 15px 0px #000000;
     color: darkcyan;
   }
+`;
+
+export const StyledLink = styled(NavLink)`
+  ${linkButtonCss}
+`;
+
+export const StyledLinkButton = styled.button`
+  ${linkButtonCss}
+  background-color: transparent;
+  border: none;
+  font-size: 0.8rem;
+  color: darkcyan;
+  padding: 8px 10px;
+  position: relative;
 `;
 
 export const PrimaryButton = styled.button`

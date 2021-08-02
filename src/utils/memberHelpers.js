@@ -5,13 +5,16 @@ export const STATUS = {
   init: 'init',
 };
 
+const emailReg =
+  /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/; // eslint-disable-line no-useless-escape
+
 export const UPDATE_FORM = 'UPDATE_FORM';
 export const RESET_FORM = 'RESET_FORM';
 
 export const onInputChange = (name, value, dispatch, formData) => {
-  console.log('onInputChange', value);
   const { hasError, error } = validateInput(name, value);
   let isFormValid = true;
+
   for (const key in formData) {
     const item = formData[key];
     // Check if the current field has error
@@ -36,58 +39,30 @@ export const validateInput = (name, value) => {
     case 'name':
       if (value.trim() === '') {
         hasError = true;
-        error = 'Username cannot be empty';
+        error = 'Name cannot be empty';
       } else {
         hasError = false;
         error = '';
       }
       break;
 
-    case 'genres':
-      if (value.length === 0) {
+    case 'city':
+      if (value.trim() === '') {
         hasError = true;
-        error = 'Genres can not be empty';
-      } else if (value.length > 6) {
-        hasError = true;
-        error = 'Please select up to 6 Genres';
+        error = 'City cannot be empty';
       } else {
         hasError = false;
         error = '';
       }
       break;
 
-    case 'image':
+    case 'email':
       if (value.trim() === '') {
         hasError = true;
-        error = 'Image cannot be empty';
-      } else {
-        hasError = false;
-        error = '';
-      }
-      break;
-
-    case 'premiered':
-      if (value.trim() === '') {
+        error = 'Email cannot be empty';
+      } else if (!emailReg.test(value)) {
         hasError = true;
-        error = 'Premiered date cannot be empty';
-      } else {
-        hasError = false;
-        error = '';
-      }
-      break;
-    case 'summary':
-      if (value.trim() === '') {
-        hasError = true;
-        error = 'Summary cannot be empty';
-      } else {
-        hasError = false;
-        error = '';
-      }
-      break;
-    case 'rating':
-      if (value.toString().trim() === '') {
-        hasError = true;
-        error = 'Rating cannot be empty';
+        error = 'Please provide a valid email address';
       } else {
         hasError = false;
         error = '';
@@ -100,7 +75,6 @@ export const validateInput = (name, value) => {
 };
 
 export const onFocusOut = (name, value, dispatch, formData) => {
-  console.log('here!', value);
   const { hasError, error } = validateInput(name, value);
   let isFormValid = true;
   for (const key in formData) {
@@ -126,47 +100,21 @@ export const initialForm = {
     hasError: true,
     error: '',
   },
-
-  premiered: {
-    label: 'Premiered',
-    value: '',
-    type: 'date',
-    touched: false,
-    hasError: true,
-    error: '',
-  },
-  rating: {
-    label: 'Rating',
-    value: 0,
-    type: 'number',
-    touched: false,
-    hasError: true,
-    error: '',
-  },
-  image: {
-    label: 'Image url',
+  city: {
+    label: 'City',
     value: '',
     type: 'text',
     touched: false,
     hasError: true,
     error: '',
   },
-  genres: {
-    label: 'Genres',
+  email: {
+    label: 'Email',
     value: '',
     type: 'text',
     touched: false,
     hasError: true,
     error: '',
   },
-  summary: {
-    label: 'Summary',
-    value: '',
-    type: 'textarea',
-    touched: false,
-    hasError: true,
-    error: '',
-  },
-
   isFormValid: false,
 };
