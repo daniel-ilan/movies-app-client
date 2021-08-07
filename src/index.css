@@ -21,18 +21,11 @@ code {
 }
 
 hr {
-  border-top: 1px solid rgb(255 255 255 / 10%);
+  border-top: 1px solid #b5b5b542;
+  margin-block: 0.5rem;
 }
 
 a,
 a:hover {
   text-decoration: none;
-}
-
-hr {
-  margin-block: 0.5rem;
-}
-
-.modal-content {
-  border: 1px solid rgb(53 53 53);
 }

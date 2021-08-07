@@ -23,6 +23,7 @@ const AllMembers = () => {
         return (
           <MemberDisplay
             member={member}
+            id={member._id}
             key={member._id}
             subscriptions={getMemberSubscriptions(member._id)}
           />

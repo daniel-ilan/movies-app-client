@@ -1,5 +1,10 @@
 import styled from 'styled-components';
 
+export const HeaderWrapper = styled.div`
+  display: flex;
+  justify-content: space-around;
+`;
+
 export const Title = styled.h1`
   color: #e5e5e5;
 `;

@@ -1,4 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react';
+import { useHistory } from 'react-router';
 import API from '../api';
 
 const initialState = {
@@ -24,6 +25,7 @@ function useProvideAuth() {
   const [loading, setLoading] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [authDetails, setAuthDetails] = useState(initialState);
+  const history = useHistory();
 
   const login = async (username, password) => {
     const response = await API.post('/login', { username, password });
@@ -35,12 +37,10 @@ function useProvideAuth() {
     }
   };
 
-  const logout = async (uid) => {
-    const response = await API.post('/logout', { uid });
-    if (response.data.user) {
-      setAuthDetails(null);
-      setIsAuthenticated(false);
-    }
+  const logout = () => {
+    setAuthDetails(null);
+    setIsAuthenticated(false);
+    history.push('/login');
   };
 
   const signUp = async (username, password) => {

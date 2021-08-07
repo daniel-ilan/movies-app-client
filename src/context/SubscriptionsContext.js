@@ -47,18 +47,6 @@ function useSubscriptionsData() {
     }
   };
 
-  const editSubscription = async (data) => {
-    try {
-      const response = await API.post('/edit-subscription', data, {
-        headers: { Authorization: `Barer ${authDetails.token}` },
-      });
-      getAllSubscriptions();
-      return response;
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   const deleteSubscription = async (subscriptionId) => {
     try {
       const response = await API.delete(
@@ -82,7 +70,6 @@ function useSubscriptionsData() {
     allSubscriptions,
     setAllSubscriptions,
     addNewSubscription,
-    editSubscription,
     deleteSubscription,
   };
 }

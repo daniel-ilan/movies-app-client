@@ -1,7 +1,7 @@
 import React from 'react';
 import { Switch, useRouteMatch } from 'react-router-dom';
 import PrivateRoute from '../components/PrivateRoute';
-import AllShows from '../components/Shows/AllShows';
+import AllShows from '../components/Shows/AllShows/AllShows';
 import AddShow from '../components/Shows/AddShow';
 import EditShow from '../components/Shows/EditShow';
 import InnerNav from '../components/shared/InnerNav';

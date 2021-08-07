@@ -4,7 +4,6 @@ import { useMembers } from '../../../context/MembersContext';
 import { OutLineButton } from '../../shared/Buttons';
 import Icon from '@mdi/react';
 import { mdiAccountEditOutline, mdiDeleteOutline } from '@mdi/js';
-import { useRouteMatch } from 'react-router-dom';
 import {
   CardContainer,
   CardActions,
@@ -22,7 +21,6 @@ import EditMemberModal from '../edit-member/EditMemberModal';
 
 const MemberDisplay = ({ member, subscriptions }) => {
   const { _id, city, email, name } = member;
-  const { path } = useRouteMatch();
   const [openShows, setOpenShows] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const target = useRef(null);

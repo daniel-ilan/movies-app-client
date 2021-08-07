@@ -1,50 +1,46 @@
-import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
-export const MoviesGrid = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  max-width: 80%;
-  overflow: auto;
-  padding-top: 50px;
-`;
-
-export const MovieCard = styled(Link)`
-  display: flex;
-  flex-direction: column;
-  cursor: pointer;
+export const ShowCard = styled.div`
   margin-inline: 2%;
   margin-bottom: 5%;
   width: 20%;
   position: relative;
   box-shadow: 0px 0px 2px 2px rgb(0 0 0 / 29%);
+  height: fit-content;
+`;
+
+export const ShowLink = styled(Link)`
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
   transition: all 0.15s;
-  box-sizing: border-box;
+  color: whitesmoke;
 
   &:hover {
     transform: scale(1.05);
     text-decoration: none;
-    box-shadow: 0px 0px 10px 0px rgb(0 0 0);
+    color: whitesmoke;
   }
 `;
 
-export const CardActions = styled.div`
+export const CardBody = styled.div`
   padding: 10px;
 `;
 
-export const MovieTitle = styled.div`
+export const ShowTitle = styled.div`
   color: whitesmoke;
   font-weight: 700;
   margin-block: 5px;
 `;
 
-export const MovieHeader = styled.div``;
+export const ShowHeader = styled.div``;
 
-export const MovieImage = styled.img`
+export const ShowImage = styled.img`
   object-fit: contain;
 `;
 
-export const Genres = styled.small`
+export const Small = styled.small`
   color: hsl(0deg 0% 56%);
 `;
 
@@ -70,17 +66,23 @@ export const Rating = styled.div`
   );
 `;
 
-export const AllShowsContainer = styled.div`
-  display: flex;
-  height: 100%;
+export const CardFooter = styled.div`
+  padding: 5px;
 `;
 
-export const Wrapper = styled.div`
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-`;
+export const SubscribersContainer = styled.div``;
 
-export const SideNav = styled.div`
-  flex-grow: 2;
+export const Subscriber = styled(Link)`
+  background-color: #1f2c383d;
+  border-radius: 3px;
+  padding: 5px;
+  color: whitesmoke;
+  border: 1px solid #333333;
+  display: flex;
+  justify-content: space-between;
+  transition: all 0.2s;
+  &:hover {
+    color: darkcyan;
+    background-color: hsl(209deg 29% 10% / 24%);
+  }
 `;

@@ -1,13 +1,18 @@
 import React from 'react';
 import { useRouteMatch } from 'react-router-dom';
-import { StyledLink } from '../shared/Buttons';
+import { useAuth } from '../../context/UserContext';
+import { StyledLink, StyledLinkButton } from '../shared/Buttons';
 import * as S from './styled';
 
 const MainNavbar = () => {
   let { url } = useRouteMatch();
+  const { logout } = useAuth();
   return (
     <div>
-      <S.Title>Welcome to Shows / subscription WebApp</S.Title>
+      <S.HeaderWrapper>
+        <S.Title>Welcome to Shows / subscription WebApp</S.Title>
+        <StyledLinkButton onClick={() => logout()}>Logout</StyledLinkButton>
+      </S.HeaderWrapper>
       <S.Nav>
         <S.Links>
           <S.LinkItem>
@@ -23,11 +28,6 @@ const MainNavbar = () => {
           <S.LinkItem>
             <StyledLink to={`${url}/users`} activeClassName='active'>
               User Managment
-            </StyledLink>
-          </S.LinkItem>
-          <S.LinkItem>
-            <StyledLink to={`${url}/logout`} activeClassName='active'>
-              Logout
             </StyledLink>
           </S.LinkItem>
         </S.Links>

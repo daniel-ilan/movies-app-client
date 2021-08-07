@@ -18,6 +18,7 @@ export const ShowsContextProvider = ({ children }) => {
 function useMoviesData() {
   const [allShows, setAllShows] = useState([]);
   const [allGenres, setAllGenres] = useState([]);
+
   const { authDetails } = useAuth();
 
   const getAllShows = useCallback(async () => {

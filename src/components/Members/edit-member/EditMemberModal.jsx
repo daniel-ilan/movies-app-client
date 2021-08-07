@@ -2,6 +2,21 @@ import React from 'react';
 import MemberForm from '../member-form/MemberForm';
 import { useMembers } from '../../../context/MembersContext';
 import { Modal } from 'react-bootstrap';
+import styled from 'styled-components';
+
+const StyledModal = styled.div`
+  background-color: hsl(218deg 15% 8%);
+  color: whitesmoke;
+  border: 1px solid #b5b5b542;
+`;
+
+const StyledModalHeader = styled(Modal.Header)`
+  border-color: #b5b5b542;
+`;
+
+const StyledModalBody = styled(Modal.Body)`
+  border: 1px solid #b5b5b500;
+`;
 
 const EditMemberModal = ({ open, setOpen, memberData }) => {
   const handleClose = () => setOpen(false);
@@ -13,17 +28,19 @@ const EditMemberModal = ({ open, setOpen, memberData }) => {
 
   return (
     <Modal show={open} onHide={handleClose} size='xl'>
-      <Modal.Header closeButton>
-        <Modal.Title>Edit Member</Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        <MemberForm
-          buttonText={BUTTON_TEXT}
-          headerText={HEADER_TEXT}
-          action={editMember}
-          memberData={memberData}
-        />
-      </Modal.Body>
+      <StyledModal>
+        <StyledModalHeader closeButton>
+          <Modal.Title>Edit Member</Modal.Title>
+        </StyledModalHeader>
+        <StyledModalBody>
+          <MemberForm
+            buttonText={BUTTON_TEXT}
+            headerText={HEADER_TEXT}
+            action={editMember}
+            memberData={memberData}
+          />
+        </StyledModalBody>
+      </StyledModal>
     </Modal>
   );
 };

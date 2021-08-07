@@ -73,6 +73,13 @@ function useMembersData() {
     }
   };
 
+  const getMemberById = (memberId) => {
+    const member = allMembers.find((member) => {
+      return member._id === memberId;
+    });
+    return member;
+  };
+
   useEffect(() => {
     getAllMembers();
   }, [getAllMembers]);
@@ -83,5 +90,6 @@ function useMembersData() {
     addNewMember,
     editMember,
     deleteMember,
+    getMemberById,
   };
 }
