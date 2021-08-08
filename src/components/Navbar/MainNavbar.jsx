@@ -7,7 +7,6 @@ import * as S from './styled';
 const MainNavbar = () => {
   let { url } = useRouteMatch();
   const { logout, authDetails } = useAuth();
-  console.log('authDetails', authDetails);
   return (
     <div>
       <S.HeaderWrapper>
@@ -23,18 +22,20 @@ const MainNavbar = () => {
               </StyledLink>
             )}
           </S.LinkItem>
-          <S.LinkItem>
-            {authDetails.permissions.includes('viewSubscriptions') && (
+          {authDetails.permissions.includes('viewSubscriptions') && (
+            <S.LinkItem>
               <StyledLink to={`${url}/members`} activeClassName='active'>
                 Members
               </StyledLink>
-            )}
-          </S.LinkItem>
-          <S.LinkItem>
-            <StyledLink to={`${url}/users`} activeClassName='active'>
-              User Managment
-            </StyledLink>
-          </S.LinkItem>
+            </S.LinkItem>
+          )}
+          {authDetails.isAdmin && (
+            <S.LinkItem>
+              <StyledLink to={`${url}/users`} activeClassName='active'>
+                User Managment
+              </StyledLink>
+            </S.LinkItem>
+          )}
         </S.Links>
       </S.Nav>
     </div>

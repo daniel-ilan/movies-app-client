@@ -77,7 +77,8 @@ const MemberDisplay = ({ member, subscriptions }) => {
 
             <StyledLinkButton
               onClick={() => setOpenShows(!openShows)}
-              ref={target}>
+              ref={target}
+              fontSmall>
               Subscribe to new movie
             </StyledLinkButton>
             <Overlay

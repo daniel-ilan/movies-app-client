@@ -3,6 +3,7 @@ import { NavLink } from 'react-router-dom';
 
 export const MoviesWatchedWrapper = styled.div`
   padding: 5px;
+  height: 55%;
 `;
 
 export const MoviesHeader = styled.h5``;
@@ -25,7 +26,7 @@ export const MovieItem = styled(NavLink)`
 
 export const SubscriptionsWrapper = styled.div`
   padding: 5px;
-  max-height: 160px;
+  height: 85%;
   overflow-y: auto;
   border: 1px solid #3e3e3e54;
 `;

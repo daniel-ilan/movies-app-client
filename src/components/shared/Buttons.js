@@ -63,7 +63,7 @@ export const StyledLinkButton = styled.button`
   ${linkButtonCss}
   background-color: transparent;
   border: none;
-  font-size: 0.8rem;
+  font-size: ${(props) => (props.fontSmall ? '0.8rem' : '1rem')};
   color: darkcyan;
   padding: 8px 10px;
   position: relative;
