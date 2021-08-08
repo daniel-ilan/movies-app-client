@@ -3,6 +3,7 @@ import { useMembers } from '../../../context/MembersContext';
 import { useSubscriptions } from '../../../context/SubscriptionsContext';
 import MemberDisplay from '../member-display/MemberDisplay';
 import { FlexWrap } from '../../shared/Wrapper';
+
 const AllMembers = () => {
   const { allMembers } = useMembers();
   const { allSubscriptions } = useSubscriptions();

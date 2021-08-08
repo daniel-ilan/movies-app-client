@@ -18,6 +18,7 @@ import CustomPopover from '../../shared/CustomPopover';
 import { Overlay } from 'react-bootstrap';
 import { SelectedShow } from '../../Shows/SelectedShow/SelectedShow';
 import EditMemberModal from '../edit-member/EditMemberModal';
+import { useAuth } from '../../../context/UserContext';
 
 const MemberDisplay = ({ member, subscriptions }) => {
   const { _id, city, email, name } = member;
@@ -26,6 +27,7 @@ const MemberDisplay = ({ member, subscriptions }) => {
   const target = useRef(null);
   const { getShowById } = useShows();
   const { deleteMember } = useMembers();
+  const { authDetails } = useAuth();
 
   const handleDelete = async (memberId) => {
     try {
@@ -40,14 +42,20 @@ const MemberDisplay = ({ member, subscriptions }) => {
       <CardContainer>
         <CardHeader>
           <CardActions>
-            <OutLineButton BColor='darkcyan' onClick={() => setOpenModal(true)}>
-              Edit
-              <Icon path={mdiAccountEditOutline} size={1} />
-            </OutLineButton>
-            <OutLineButton BColor='#522a2a' onClick={() => handleDelete(_id)}>
-              Delete
-              <Icon path={mdiDeleteOutline} size={1} />
-            </OutLineButton>
+            {authDetails.permissions.includes('deleteSubscriptions') && (
+              <OutLineButton
+                BColor='darkcyan'
+                onClick={() => setOpenModal(true)}>
+                Edit
+                <Icon path={mdiAccountEditOutline} size={1} />
+              </OutLineButton>
+            )}
+            {authDetails.permissions.includes('updateSubscriptions') && (
+              <OutLineButton BColor='#522a2a' onClick={() => handleDelete(_id)}>
+                Delete
+                <Icon path={mdiDeleteOutline} size={1} />
+              </OutLineButton>
+            )}
           </CardActions>
         </CardHeader>
         <CardInfoBlock>

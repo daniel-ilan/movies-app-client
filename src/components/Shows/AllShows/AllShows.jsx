@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useShows } from '../../../context/ShowsContext';
+
 import ShowDisplay from '../ShowDisplay/ShowDisplay';
 import * as S from './styled';
 

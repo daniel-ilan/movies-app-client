@@ -1,5 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react';
-import { useHistory } from 'react-router';
+import React, { useContext, useState, useEffect, useCallback } from 'react';
 import API from '../api';
 
 const initialState = {
@@ -8,6 +7,7 @@ const initialState = {
   username: null,
   success: false,
   loading: false,
+  permissions: [],
 };
 
 const UserContext = React.createContext();
@@ -25,7 +25,6 @@ function useProvideAuth() {
   const [loading, setLoading] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [authDetails, setAuthDetails] = useState(initialState);
-  const history = useHistory();
 
   const login = async (username, password) => {
     const response = await API.post('/login', { username, password });
@@ -40,7 +39,9 @@ function useProvideAuth() {
   const logout = () => {
     setAuthDetails(null);
     setIsAuthenticated(false);
-    history.push('/login');
+    window.localStorage.setItem('token', null);
+    window.localStorage.setItem('id', null);
+    window.localStorage.setItem('username', null);
   };
 
   const signUp = async (username, password) => {
@@ -53,39 +54,46 @@ function useProvideAuth() {
     }
   };
 
-  const validateToken = async (token, userId, username) => {
-    try {
-      const checkToken = await API.post('/validate-token', userId, {
-        headers: { Authorization: `Barer ${token}` },
-      });
-      if (checkToken.data.success) {
-        setAuthDetails({
-          username,
-          userId,
-          token,
-          success: true,
+  const validateToken = useCallback(
+    async (token, userId, username) => {
+      try {
+        const checkToken = await API.post('/validate-token', userId, {
+          headers: {
+            Authorization: `Barer ${token}`,
+          },
         });
-        setIsAuthenticated(true);
-      } else {
-        setAuthDetails(initialState);
-        localStorage.removeItem('token');
-        localStorage.removeItem('id');
-        localStorage.removeItem('username');
-        setIsAuthenticated(false);
+
+        if (checkToken.data.success) {
+          setAuthDetails({
+            ...authDetails,
+            username,
+            userId,
+            token,
+            success: true,
+          });
+          setIsAuthenticated(true);
+        } else {
+          setAuthDetails(initialState);
+          localStorage.removeItem('token');
+          localStorage.removeItem('id');
+          localStorage.removeItem('username');
+          setIsAuthenticated(false);
+        }
+      } catch (error) {
+        if (error.response.status === 401) {
+          window.history.replaceState(null, '', '/login');
+          setAuthDetails(initialState);
+          localStorage.removeItem('token');
+          localStorage.removeItem('id');
+          localStorage.removeItem('username');
+          setIsAuthenticated(false);
+        } else {
+          console.log(error);
+        }
       }
-    } catch (error) {
-      if (error.response.status === 401) {
-        window.history.replaceState(null, '', '/login');
-        setAuthDetails(initialState);
-        localStorage.removeItem('token');
-        localStorage.removeItem('id');
-        localStorage.removeItem('username');
-        setIsAuthenticated(false);
-      } else {
-        console.log(error);
-      }
-    }
-  };
+    },
+    [authDetails],
+  );
 
   useEffect(() => {
     const token = localStorage.getItem('token');

@@ -3,24 +3,29 @@ import * as S from './styled';
 import { useRouteMatch } from 'react-router-dom';
 import { useSubscriptions } from '../../../context/SubscriptionsContext';
 import { useMembers } from '../../../context/MembersContext';
+import { useAuth } from '../../../context/UserContext';
+
 const ShowDisplay = ({ show }) => {
   const { path } = useRouteMatch();
+  const { authDetails } = useAuth();
   const { allSubscriptions } = useSubscriptions();
   const { getMemberById } = useMembers();
-
   const showSubscribers = [];
-  allSubscriptions.forEach((subscription) => {
-    const isSubscribed = subscription.movies.find(
-      (movie) => movie.movieId === show._id,
-    );
-    if (isSubscribed) {
-      showSubscribers.push({
-        date: isSubscribed.date,
-        member: getMemberById(subscription.memberId),
-      });
-    }
-  });
-  console.log(showSubscribers);
+
+  if (authDetails.permissions.includes('viewSubscriptions')) {
+    allSubscriptions.forEach((subscription) => {
+      const isSubscribed = subscription.movies.find(
+        (movie) => movie.movieId === show._id,
+      );
+      if (isSubscribed) {
+        showSubscribers.push({
+          date: isSubscribed.date,
+          member: getMemberById(subscription.memberId),
+        });
+      }
+    });
+  }
+
   return (
     <S.ShowCard>
       <S.ShowLink to={`${path}/${show._id}`}>
@@ -33,21 +38,27 @@ const ShowDisplay = ({ show }) => {
           <S.Small>{show.genres.join(', ')}</S.Small>
         </S.CardBody>
       </S.ShowLink>
-      <hr />
-      <S.CardFooter>
-        <h6>Subscribers</h6>
-        <S.SubscribersContainer>
-          {showSubscribers.map((subsciption) => {
-            return (
-              // Add functionality to scroll down and highlight the member that was clicked
-              <S.Subscriber to='/main/members/'>
-                <span>{subsciption.member.name}</span>
-                <S.Small>{subsciption.date}</S.Small>
-              </S.Subscriber>
-            );
-          })}
-        </S.SubscribersContainer>
-      </S.CardFooter>
+      {authDetails.permissions.includes('viewSubscriptions') && (
+        <>
+          <hr />
+          <S.CardFooter>
+            <h6>Subscribers</h6>
+            <S.SubscribersContainer>
+              {showSubscribers.map((subsciption) => {
+                return (
+                  // Add functionality to scroll down and highlight the member that was clicked
+                  <S.Subscriber
+                    to='/main/members/'
+                    key={subsciption.member._id}>
+                    <span>{subsciption.member.name}</span>
+                    <S.Small>{subsciption.date}</S.Small>
+                  </S.Subscriber>
+                );
+              })}
+            </S.SubscribersContainer>
+          </S.CardFooter>
+        </>
+      )}
     </S.ShowCard>
   );
 };

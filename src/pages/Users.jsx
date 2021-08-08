@@ -4,17 +4,24 @@ import { useAuth } from '../context/UserContext';
 import AllUsers from '../components/Users/AllUsers/AllUsers';
 import AddUser from '../components/Users/AddUser';
 import EditUser from '../components/Users/EditUser';
-import InnerNav from '../components/shared/InnerNav';
-
+import { InnerNav } from '../components/shared/InnerNav';
+import { StyledLink } from '../components/shared/Buttons';
 import PrivateRoute from '../components/PrivateRoute';
 
 const Users = () => {
-  const { path } = useRouteMatch();
+  const { path, url } = useRouteMatch();
   const { authDetails } = useAuth();
   const [users, setUsers] = useState(null);
   return (
     <>
-      <InnerNav linkUrl='add-user' linkText='Add User' homeText='All users' />
+      <InnerNav>
+        <StyledLink to={`${url}`} activeClassName='active' exact>
+          All users
+        </StyledLink>
+        <StyledLink to={`${url}/add-user`} activeClassName='active'>
+          Add user
+        </StyledLink>
+      </InnerNav>
       <Switch>
         <PrivateRoute path={path} exact>
           <AllUsers

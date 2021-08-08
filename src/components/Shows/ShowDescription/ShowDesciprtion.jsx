@@ -5,6 +5,7 @@ import { mdiAccountEditOutline, mdiDeleteOutline } from '@mdi/js';
 import * as S from './styled';
 import { useShows } from '../../../context/ShowsContext';
 import { OutLineButtonLink, OutLineButton } from '../../shared/Buttons';
+import { useAuth } from '../../../context/UserContext';
 
 const ShowDescription = () => {
   const { allShows, deleteShow } = useShows();
@@ -12,6 +13,7 @@ const ShowDescription = () => {
   const { url } = useRouteMatch();
   const [selectedMovie, setSelectedMovie] = useState(null);
   const history = useHistory();
+  const { authDetails } = useAuth();
 
   const handleDelete = async (showId) => {
     try {
@@ -37,20 +39,24 @@ const ShowDescription = () => {
           <S.RatingGenersContainer>
             <S.Genres>{selectedMovie.genres.join(', ')}</S.Genres>
             <S.Rating>{selectedMovie.rating}</S.Rating>
-            <OutLineButtonLink to={`${url}/edit`} BColor='darkcyan'>
-              <Icon
-                path={mdiAccountEditOutline}
-                title='User Profile'
-                size={1}
-              />
-              Edit
-            </OutLineButtonLink>
-            <OutLineButton
-              onClick={() => handleDelete(showId)}
-              BColor='#522a2a'>
-              <Icon path={mdiDeleteOutline} title='User Profile' size={1} />
-              Delete
-            </OutLineButton>
+            {authDetails.permissions.includes('updateMovies') && (
+              <OutLineButtonLink to={`${url}/edit`} BColor='darkcyan'>
+                <Icon
+                  path={mdiAccountEditOutline}
+                  title='User Profile'
+                  size={1}
+                />
+                Edit
+              </OutLineButtonLink>
+            )}
+            {authDetails.permissions.includes('deleteMovies') && (
+              <OutLineButton
+                onClick={() => handleDelete(showId)}
+                BColor='#522a2a'>
+                <Icon path={mdiDeleteOutline} title='User Profile' size={1} />
+                Delete
+              </OutLineButton>
+            )}
           </S.RatingGenersContainer>
         </S.MovieHeader>
         <S.MovieDescription

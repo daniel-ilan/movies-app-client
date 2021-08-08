@@ -6,7 +6,8 @@ import * as S from './styled';
 
 const MainNavbar = () => {
   let { url } = useRouteMatch();
-  const { logout } = useAuth();
+  const { logout, authDetails } = useAuth();
+  console.log('authDetails', authDetails);
   return (
     <div>
       <S.HeaderWrapper>
@@ -16,14 +17,18 @@ const MainNavbar = () => {
       <S.Nav>
         <S.Links>
           <S.LinkItem>
-            <StyledLink to={`${url}/shows`} activeClassName='active'>
-              Shows
-            </StyledLink>
+            {authDetails.permissions.includes('viewMovies') && (
+              <StyledLink to={`${url}/shows`} activeClassName='active'>
+                Shows
+              </StyledLink>
+            )}
           </S.LinkItem>
           <S.LinkItem>
-            <StyledLink to={`${url}/members`} activeClassName='active'>
-              Members
-            </StyledLink>
+            {authDetails.permissions.includes('viewSubscriptions') && (
+              <StyledLink to={`${url}/members`} activeClassName='active'>
+                Members
+              </StyledLink>
+            )}
           </S.LinkItem>
           <S.LinkItem>
             <StyledLink to={`${url}/users`} activeClassName='active'>
