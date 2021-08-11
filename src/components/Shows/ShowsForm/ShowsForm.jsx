@@ -2,43 +2,33 @@ import React, { useEffect, useReducer, useState } from 'react';
 import * as S from './styled';
 import FormInput from '../../shared/FormInput';
 import FormTextArea from '../../shared/FormTextArea';
-import {
-  STATUS,
-  UPDATE_FORM,
-  onInputChange,
-  onFocusOut,
-  validateInput,
-  initialForm,
-} from '../../../utils/moviesHelpers';
+import { validateInput, initialForm } from '../../../utils/moviesHelpers';
 import { FormModal } from '../../shared/Modals';
 import { PrimaryButton } from '../../shared/Buttons';
 import MultiSelect from '../../shared/FormMultiSelect';
 import { useShows } from '../../../context/ShowsContext';
+import {
+  initForm,
+  UPDATE_FORM,
+  STATUS,
+  focusOut,
+  inputChange,
+} from '../../../utils/formHelpers';
 
 const leftInputs = ['name', 'genres', 'image'];
 const centerInputs = ['premiered', 'rating'];
 
-const formReducer = (state, action) => {
-  switch (action.type) {
-    case UPDATE_FORM:
-      const { name, value, hasError, error, touched, isFormValid } =
-        action.data;
-      return {
-        ...state,
-        [name]: { ...state[name], value, hasError, error, touched },
-        isFormValid,
-      };
-    default:
-      return state;
-  }
-};
-
 const ShowForm = ({ action, buttonText, headerText, showData }) => {
+  const formReducer = initForm(initialForm);
   const [formData, dispatch] = useReducer(formReducer, initialForm);
   const [status, setStatus] = useState(STATUS.init);
   const [message, setMessage] = useState('');
   const [showError, setShowError] = useState(false);
   const [selectedGenres, setSelectedGenres] = useState([]);
+
+  const onInputChange = inputChange(validateInput);
+  const onFocusOut = focusOut(validateInput);
+
   const { allGenres } = useShows();
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -72,7 +62,10 @@ const ShowForm = ({ action, buttonText, headerText, showData }) => {
         // form is valid
         const formatedData = {};
         for (const name in formData) {
-          if (name === 'genres' && formData[name].label) {
+          if (
+            name === 'genres' &&
+            typeof formData[name].value[0] !== 'string'
+          ) {
             formatedData[name] = formData[name].value.map(
               (genre) => genre.value,
             );
@@ -80,7 +73,6 @@ const ShowForm = ({ action, buttonText, headerText, showData }) => {
             formatedData[name] = formData[name].value;
           }
         }
-        console.log('formatedData', formatedData);
         const response = await action(formatedData);
         setStatus(STATUS.success);
         setMessage(response.data.message);
@@ -110,6 +102,9 @@ const ShowForm = ({ action, buttonText, headerText, showData }) => {
           });
           if (key === 'genres') {
             const formatGenres = showData[key].map((genre) => {
+              if (genre && genre.value) {
+                return genre;
+              }
               return { value: genre, label: genre };
             });
             setSelectedGenres(formatGenres);
@@ -124,6 +119,11 @@ const ShowForm = ({ action, buttonText, headerText, showData }) => {
       <FormModal status={status} setStatus={setStatus} message={message} />
       <S.FormWrapper>
         <S.Header>{headerText}</S.Header>
+        <S.FormHeader>
+          {showError && !formData.isFormValid && (
+            <S.FormError>Please fill all the fields correctly</S.FormError>
+          )}
+        </S.FormHeader>
         <S.Form>
           <S.InputsWrapper>
             <S.LeftInputs>

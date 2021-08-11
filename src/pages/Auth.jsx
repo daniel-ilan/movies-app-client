@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
-import Login from '../components/Login';
-import SignUp from '../components/SignUp';
+import Login from '../components/Auth/login/Login';
+import SignUp from '../components/Auth/signup/SignUp';
 import { useAuth } from '../context/UserContext';
 import {
   Redirect,
@@ -9,6 +9,18 @@ import {
   useRouteMatch,
   useHistory,
 } from 'react-router-dom';
+import styled from 'styled-components';
+
+const Container = styled.div`
+  max-width: 50%;
+  margin: auto;
+  padding-block: 20px;
+  background-color: #1f2c383d;
+  border-radius: 20px;
+  height: 80%;
+  display: flex;
+  color: whitesmoke;
+`;
 
 const Auth = () => {
   const { isAuthenticated } = useAuth();
@@ -23,7 +35,7 @@ const Auth = () => {
   }, [isAuthenticated, history]);
 
   return (
-    <>
+    <Container>
       <Switch>
         <Route path={`/login`}>
           <Login />
@@ -33,7 +45,7 @@ const Auth = () => {
         </Route>
         {path === '/' && <Redirect to={`${path}login`} />}
       </Switch>
-    </>
+    </Container>
   );
 };
 

@@ -6,7 +6,7 @@ import AddUser from '../components/Users/AddUser';
 import EditUser from '../components/Users/EditUser';
 import { InnerNav } from '../components/shared/InnerNav';
 import { StyledLink } from '../components/shared/Buttons';
-import PrivateRoute from '../components/PrivateRoute';
+import PrivateRoute from '../components/Auth/PrivateRoute';
 
 const Users = () => {
   const { path, url } = useRouteMatch();

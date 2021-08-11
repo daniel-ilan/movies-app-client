@@ -1,6 +1,6 @@
 import React from 'react';
 import { Switch, useRouteMatch } from 'react-router-dom';
-import PrivateRoute from '../components/PrivateRoute';
+import PrivateRoute from '../components/Auth/PrivateRoute';
 import AllShows from '../components/Shows/AllShows/AllShows';
 import AddShow from '../components/Shows/AddShow';
 import EditShow from '../components/Shows/EditShow';

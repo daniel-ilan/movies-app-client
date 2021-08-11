@@ -72,7 +72,6 @@ const MultiSelect = ({
   const { error, touched, label, hasError } = data;
 
   const handleChange = (newValue) => {
-    console.log('newValue', newValue);
     const value = newValue.map((val) => val.value);
     changed(value);
     setValues(newValue);
@@ -83,15 +82,16 @@ const MultiSelect = ({
   };
 
   useEffect(() => {
-    console.log('options', options);
     const formatOptions = options.map((option) => {
+      if (option && option.value) {
+        return option;
+      }
       return { value: option, label: option };
     });
     setSelectOptions(formatOptions);
   }, [options]);
 
   useEffect(() => {
-    console.log('initialGenres', initialGenres);
     setValues(initialGenres);
   }, [initialGenres]);
 

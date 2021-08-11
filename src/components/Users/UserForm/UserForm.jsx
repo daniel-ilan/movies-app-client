@@ -4,36 +4,29 @@ import * as S from './styled';
 import FormInput from '../../shared/FormInput';
 import FormCheckbox from '../../shared/FormCheckbox';
 import {
-  STATUS,
-  UPDATE_FORM,
-  onInputChange,
-  onFocusOut,
   validateInput,
   initialForm,
+  postValidation,
 } from '../../../utils/usersHelpers';
 import { FormModal } from '../../shared/Modals';
 import { PrimaryButton } from '../../shared/Buttons';
-
-const formReducer = (state, action) => {
-  switch (action.type) {
-    case UPDATE_FORM:
-      const { name, value, hasError, error, touched, isFormValid } =
-        action.data;
-      return {
-        ...state,
-        [name]: { ...state[name], value, hasError, error, touched },
-        isFormValid,
-      };
-    default:
-      return state;
-  }
-};
+import {
+  initForm,
+  UPDATE_FORM,
+  STATUS,
+  focusOut,
+  inputChange,
+} from '../../../utils/formHelpers';
 
 const UserForm = ({ token, url, buttonText, headerText, userData }) => {
+  const formReducer = initForm(initialForm);
+
   const [formData, dispatch] = useReducer(formReducer, initialForm);
   const [status, setStatus] = useState(STATUS.init);
   const [message, setMessage] = useState('');
   const [showError, setShowError] = useState(false);
+  const onInputChange = inputChange(validateInput, postValidation);
+  const onFocusOut = focusOut(validateInput);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -111,6 +104,7 @@ const UserForm = ({ token, url, buttonText, headerText, userData }) => {
       }
     }
   }, [userData]);
+
   return (
     <div>
       <FormModal status={status} setStatus={setStatus} message={message} />

@@ -2,7 +2,7 @@ import React from 'react';
 import { InnerNav } from '../components/shared/InnerNav';
 import { StyledLink } from '../components/shared/Buttons';
 import { Switch, useRouteMatch } from 'react-router-dom';
-import PrivateRoute from '../components/PrivateRoute';
+import PrivateRoute from '../components/Auth/PrivateRoute';
 import AllMembers from '../components/Members/all-members/AllMembers';
 import AddMember from '../components/Members/AddMember';
 import { useAuth } from '../context/UserContext';

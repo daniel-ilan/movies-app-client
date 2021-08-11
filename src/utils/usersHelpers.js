@@ -1,3 +1,4 @@
+import { UPDATE_FORM } from './formHelpers';
 const subscriptionsBoxes = [
   'createSubscriptions',
   'deleteSubscriptions',
@@ -5,31 +6,58 @@ const subscriptionsBoxes = [
 ];
 const moviesBoxes = ['createMovies', 'deleteMovies', 'updateMovies'];
 
-export const STATUS = {
-  loading: 'loading',
-  success: 'success',
-  fail: 'fail',
-  init: 'init',
-};
+export const validateInput = (name, value) => {
+  let hasError = false,
+    error = '';
+  console.log(name);
+  switch (name) {
+    case 'username':
+      if (value.trim() === '') {
+        hasError = true;
+        error = 'Username cannot be empty';
+      } else if (!/^[a-zA-Z ]+$/.test(value)) {
+        hasError = true;
+        error = 'Invalid username. Please avoid Special characters';
+      } else {
+        hasError = false;
+        error = '';
+      }
+      break;
 
-export const UPDATE_FORM = 'UPDATE_FORM';
-export const RESET_FORM = 'RESET_FORM';
+    case 'firstName':
+      if (value.trim() === '') {
+        hasError = true;
+        error = 'First name cannot be empty';
+      } else {
+        hasError = false;
+        error = '';
+      }
+      break;
 
-export const onInputChange = (name, value, dispatch, formData) => {
-  const { hasError, error } = validateInput(name, value);
-  let isFormValid = true;
-
-  for (const key in formData) {
-    const item = formData[key];
-    // Check if the current field has error
-    if (key === name && hasError) {
-      isFormValid = false;
-    } else if (key !== name && item.hasError) {
-      // Check if any other field has error
-      isFormValid = false;
-    }
+    case 'lastName':
+      if (value.trim() === '') {
+        hasError = true;
+        error = 'Last name cannot be empty';
+      } else {
+        hasError = false;
+        error = '';
+      }
+      break;
+    default:
+      break;
   }
 
+  return { hasError, error };
+};
+
+export const postValidation = (
+  name,
+  value,
+  dispatch,
+  hasError,
+  error,
+  isFormValid,
+) => {
   if (subscriptionsBoxes.includes(name) && value) {
     dispatch({
       type: UPDATE_FORM,
@@ -83,70 +111,6 @@ export const onInputChange = (name, value, dispatch, formData) => {
       });
     }
   }
-
-  dispatch({
-    type: UPDATE_FORM,
-    data: { name, value, hasError, error, touched: false, isFormValid },
-  });
-};
-
-export const validateInput = (name, value) => {
-  let hasError = false,
-    error = '';
-  switch (name) {
-    case 'username':
-      if (value.trim() === '') {
-        hasError = true;
-        error = 'Username cannot be empty';
-      } else if (!/^[a-zA-Z ]+$/.test(value)) {
-        hasError = true;
-        error = 'Invalid username. Please avoid Special characters';
-      } else {
-        hasError = false;
-        error = '';
-      }
-      break;
-
-    case 'firstName':
-      if (value.trim() === '') {
-        hasError = true;
-        error = 'First name cannot be empty';
-      } else {
-        hasError = false;
-        error = '';
-      }
-      break;
-
-    case 'lastName':
-      if (value.trim() === '') {
-        hasError = true;
-        error = 'Last name cannot be empty';
-      } else {
-        hasError = false;
-        error = '';
-      }
-      break;
-    default:
-      break;
-  }
-  return { hasError, error };
-};
-
-export const onFocusOut = (name, value, dispatch, formData) => {
-  const { hasError, error } = validateInput(name, value);
-  let isFormValid = true;
-  for (const key in formData) {
-    const item = formData[key];
-    if (key === name && hasError) {
-      isFormValid = false;
-    } else if (key !== name && item.hasError) {
-      isFormValid = false;
-    }
-  }
-  dispatch({
-    type: UPDATE_FORM,
-    data: { name, value, hasError, error, touched: true, isFormValid },
-  });
 };
 
 export const initialForm = {

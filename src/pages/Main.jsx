@@ -1,6 +1,6 @@
 import React from 'react';
 import { Switch, useRouteMatch } from 'react-router-dom';
-import PrivateRoute from '../components/PrivateRoute';
+import PrivateRoute from '../components/Auth/PrivateRoute';
 import MainNavbar from '../components/Navbar/MainNavbar';
 import Users from './Users';
 import Shows from './Shows';
@@ -13,14 +13,8 @@ import { SubscriptionsContextProvider } from '../context/SubscriptionsContext';
 import { MembersContextProvider } from '../context/MembersContext';
 
 const MainWrapper = styled.div`
-  background: linear-gradient(
-    45deg,
-    hsl(216deg 13% 8%) 80%,
-    hsl(202deg 70% 12%) 100%
-  );
-  height: 100vh;
-  overflow: hidden;
-  padding: 2%;
+  height: 100%;
+
   display: grid;
   grid-template-rows: 20% 80%;
   row-gap: 10px;

@@ -1,41 +1,28 @@
 import React, { useEffect, useReducer, useState } from 'react';
 import * as S from './styled';
 import FormInput from '../../shared/FormInput';
-import {
-  STATUS,
-  UPDATE_FORM,
-  RESET_FORM,
-  onInputChange,
-  onFocusOut,
-  validateInput,
-  initialForm,
-} from '../../../utils/memberHelpers';
+import { validateInput, initialForm } from '../../../utils/memberHelpers';
 import { FormModal } from '../../shared/Modals';
 import { PrimaryButton } from '../../shared/Buttons';
-
-const formReducer = (state, action) => {
-  switch (action.type) {
-    case UPDATE_FORM:
-      const { name, value, hasError, error, touched, isFormValid } =
-        action.data;
-      return {
-        ...state,
-        [name]: { ...state[name], value, hasError, error, touched },
-        isFormValid,
-      };
-
-    case RESET_FORM:
-      return initialForm;
-    default:
-      return state;
-  }
-};
+import {
+  initForm,
+  UPDATE_FORM,
+  RESET_FORM,
+  STATUS,
+  focusOut,
+  inputChange,
+} from '../../../utils/formHelpers';
 
 const MemberForm = ({ action, buttonText, headerText, memberData }) => {
+  const formReducer = initForm(initialForm);
   const [formData, dispatch] = useReducer(formReducer, initialForm);
   const [status, setStatus] = useState(STATUS.init);
   const [message, setMessage] = useState('');
   const [showError, setShowError] = useState(false);
+
+  const onInputChange = inputChange(validateInput);
+  const onFocusOut = focusOut(validateInput);
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     setStatus(STATUS.loading);
