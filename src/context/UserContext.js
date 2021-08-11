@@ -57,11 +57,15 @@ function useProvideAuth() {
   const validateToken = useCallback(
     async (token, userId, username) => {
       try {
-        const checkToken = await API.post('/validate-token', userId, {
-          headers: {
-            Authorization: `Barer ${token}`,
+        const checkToken = await API.post(
+          '/validate-token',
+          { userId },
+          {
+            headers: {
+              Authorization: `Barer ${token}`,
+            },
           },
-        });
+        );
 
         if (checkToken.data.success) {
           setAuthDetails({
@@ -69,6 +73,8 @@ function useProvideAuth() {
             username,
             userId,
             token,
+            permissions: checkToken.data.permissions,
+            isAdmin: checkToken.data,
             success: true,
           });
           setIsAuthenticated(true);
