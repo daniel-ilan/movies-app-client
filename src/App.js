@@ -13,7 +13,7 @@ const MainWrapper = styled.div`
   );
   height: 100vh;
   overflow: hidden;
-  padding: 2%;
+  padding: 2% 2% 0 2%;
 `;
 
 function App() {

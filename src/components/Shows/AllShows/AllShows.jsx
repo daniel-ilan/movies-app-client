@@ -1,14 +1,12 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useShows } from '../../../context/ShowsContext';
-
 import ShowDisplay from '../ShowDisplay/ShowDisplay';
 import * as S from './styled';
 
 const SHOWS_PER_PAGE = 20;
 
 const AllShows = () => {
-  const { allShows } = useShows();
-
+  const { filteredShows } = useShows();
   const loader = useRef(null);
   const rootElement = useRef(null);
   const [page, setPage] = useState(0);
@@ -17,18 +15,21 @@ const AllShows = () => {
 
   const [initialLoad, setInitialLoad] = useState(true);
 
-  const hasMoreData = showsToRender.length < allShows.length;
+  const hasMoreData = showsToRender.length < filteredShows.length;
 
   const loadMoreShows = useCallback(() => {
     if (hasMoreData) {
-      const newShows = Array.from(allShows).slice(
+      const newShows = Array.from(filteredShows).slice(
         page * SHOWS_PER_PAGE,
         (page + 1) * SHOWS_PER_PAGE,
       );
+      console.log('newShows', newShows);
       setShowsToRender((shows) => [...shows, ...newShows]);
-      setPage((page) => page + 1);
+      setTimeout(() => {
+        setPage((page) => page + 1);
+      }, 100);
     }
-  }, [allShows, page, hasMoreData]);
+  }, [filteredShows, page, hasMoreData]);
 
   const handleObserver = useCallback(
     (entities) => {
@@ -39,6 +40,12 @@ const AllShows = () => {
     },
     [loadMoreShows],
   );
+
+  useEffect(() => {
+    setPage(0);
+    setShowsToRender([]);
+    setInitialLoad(true);
+  }, [filteredShows]);
 
   useEffect(() => {
     if (loader.current && rootElement.current) {
@@ -63,7 +70,6 @@ const AllShows = () => {
 
   return showsToRender.length > 0 ? (
     <S.AllShowsContainer>
-      <S.SideNav></S.SideNav>
       <S.MoviesGrid ref={rootElement}>
         {showsToRender.map((movie, index) => {
           return <ShowDisplay show={movie} key={movie._id} />;

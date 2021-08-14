@@ -8,22 +8,28 @@ import { InnerNav } from '../components/shared/InnerNav';
 import { StyledLink } from '../components/shared/Buttons';
 import ShowDescription from '../components/Shows/ShowDescription/ShowDesciprtion';
 import { useAuth } from '../context/UserContext';
+import ShowControls from '../components/Shows/Controls/Controls';
+import styled from 'styled-components';
+
+const LinksWrapper = styled.div``;
 
 const Shows = () => {
   const { path, url } = useRouteMatch();
   const { authDetails } = useAuth();
-
   return (
     <>
       <InnerNav>
-        <StyledLink to={`${url}`} activeClassName='active' exact>
-          All shows
-        </StyledLink>
-        {authDetails.permissions.includes('createMovies') && (
-          <StyledLink to={`${url}/add-show`} activeClassName='active'>
-            Add show
+        <LinksWrapper>
+          <StyledLink to={`${url}`} activeClassName='active' exact>
+            All shows
           </StyledLink>
-        )}
+          {authDetails.permissions.includes('createMovies') && (
+            <StyledLink to={`${url}/add-show`} activeClassName='active'>
+              Add show
+            </StyledLink>
+          )}
+        </LinksWrapper>
+        <ShowControls />
       </InnerNav>
       <Switch>
         <PrivateRoute path={path} exact>

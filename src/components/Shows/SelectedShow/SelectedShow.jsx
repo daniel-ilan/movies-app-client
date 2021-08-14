@@ -8,8 +8,8 @@ const LABEL_TEXT = 'Search a show';
 const DATE_LABEL_TEXT = 'Pick a date';
 
 export function SelectedShow({ member, onSubmit }) {
-  const { allShows } = useShows();
-  const [renderShows, setRenderShows] = useState(allShows);
+  const { initShows } = useShows();
+  const [renderShows, setRenderShows] = useState(initShows);
   const [searchValue, setSearchValue] = useState('');
   const [dateValue, setDateValue] = useState(
     new Date().toLocaleDateString('en-CA'),
@@ -21,7 +21,7 @@ export function SelectedShow({ member, onSubmit }) {
 
   const onSearchInputChange = (e) => {
     const val = e.target.value;
-    const filteredShows = allShows.filter((show) =>
+    const filteredShows = initShows.filter((show) =>
       show.name.toLowerCase().includes(val.toLowerCase()),
     );
     setRenderShows(filteredShows);

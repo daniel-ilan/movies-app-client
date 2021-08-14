@@ -8,7 +8,7 @@ import { OutLineButtonLink, OutLineButton } from '../../shared/Buttons';
 import { useAuth } from '../../../context/UserContext';
 
 const ShowDescription = () => {
-  const { allShows, deleteShow } = useShows();
+  const { deleteShow, getShowById } = useShows();
   const { showId } = useParams();
   const { url } = useRouteMatch();
   const [selectedMovie, setSelectedMovie] = useState(null);
@@ -26,9 +26,9 @@ const ShowDescription = () => {
   };
 
   useEffect(() => {
-    const show = allShows.find((movie) => movie._id === showId);
+    const show = getShowById(showId);
     setSelectedMovie(show);
-  }, [allShows, showId]);
+  }, [showId, getShowById]);
 
   return selectedMovie ? (
     <S.Wrapper>

@@ -7,8 +7,8 @@ const EditShow = () => {
   const BUTTON_TEXT = 'Update Show';
   const HEADER_TEXT = 'Edit Show';
   let { showId } = useParams();
-  const { allShows, editShow } = useShows();
-  const showData = allShows.find((show) => show._id === showId);
+  const { initShows, editShow } = useShows();
+  const showData = initShows.find((show) => show._id === showId);
 
   return (
     <div>

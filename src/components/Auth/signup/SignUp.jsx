@@ -109,6 +109,7 @@ const SignUp = () => {
                   onFocusOut={(e) =>
                     onFocusOut(key, e.target.value, dispatch, formData)
                   }
+                  width='100%'
                 />
               )
             );

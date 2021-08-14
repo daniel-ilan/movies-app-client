@@ -11,16 +11,17 @@ import { PageWrapper } from '../components/shared/Wrapper';
 import { ShowsContextProvider } from '../context/ShowsContext';
 import { SubscriptionsContextProvider } from '../context/SubscriptionsContext';
 import { MembersContextProvider } from '../context/MembersContext';
-
+import { useAuth } from '../context/UserContext';
 const MainWrapper = styled.div`
   height: 100%;
 
   display: grid;
-  grid-template-rows: 20% 80%;
-  row-gap: 10px;
+  grid-template-rows: 13% 86%;
+  row-gap: 1%;
 `;
 
 const Main = () => {
+  const { authDetails } = useAuth();
   const { path } = useRouteMatch();
   return (
     <MainWrapper>
@@ -33,15 +34,21 @@ const Main = () => {
                 <PrivateRoute path={path} exact>
                   <Welcome />
                 </PrivateRoute>
-                <PrivateRoute path={`${path}/shows`}>
-                  <Shows />
-                </PrivateRoute>
-                <PrivateRoute path={`${path}/members`}>
-                  <Members />
-                </PrivateRoute>
-                <PrivateRoute path={`${path}/users`}>
-                  <Users />
-                </PrivateRoute>
+                {authDetails.permissions.includes('viewMovies') && (
+                  <PrivateRoute path={`${path}/shows`}>
+                    <Shows />
+                  </PrivateRoute>
+                )}
+                {authDetails.permissions.includes('viewSubscriptions') && (
+                  <PrivateRoute path={`${path}/members`}>
+                    <Members />
+                  </PrivateRoute>
+                )}
+                {authDetails.isAdmin && (
+                  <PrivateRoute path={`${path}/users`}>
+                    <Users />
+                  </PrivateRoute>
+                )}
               </Switch>
             </MembersContextProvider>
           </SubscriptionsContextProvider>

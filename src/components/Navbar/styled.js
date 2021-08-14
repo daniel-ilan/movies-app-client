@@ -1,5 +1,11 @@
 import styled from 'styled-components';
 
+export const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+`;
+
 export const HeaderWrapper = styled.div`
   display: flex;
   justify-content: space-around;
@@ -10,11 +16,12 @@ export const Title = styled.h1`
 `;
 
 export const Nav = styled.nav`
-  padding: 20px;
+  margin-top: auto;
 `;
 
 export const Links = styled.ul`
   display: flex;
+  margin: 0;
 `;
 
 export const LinkItem = styled.li`

@@ -8,7 +8,7 @@ const MainNavbar = () => {
   let { url } = useRouteMatch();
   const { logout, authDetails } = useAuth();
   return (
-    <div>
+    <S.Container>
       <S.HeaderWrapper>
         <S.Title>Welcome to Shows / subscription WebApp</S.Title>
         <StyledLinkButton onClick={() => logout()}>Logout</StyledLinkButton>
@@ -38,7 +38,7 @@ const MainNavbar = () => {
           )}
         </S.Links>
       </S.Nav>
-    </div>
+    </S.Container>
   );
 };
 

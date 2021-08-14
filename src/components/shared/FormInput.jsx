@@ -14,7 +14,7 @@ const StyledLabel = styled(Form.Label)`
 `;
 
 const StyledFormGroup = styled(Form.Group)`
-  width: ${(props) => props.width || 250};
+  width: ${(props) => props.width || '250px'};
 `;
 
 const FormInput = ({ changed, data, id, onFocusOut, width }) => {
